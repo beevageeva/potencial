@@ -2,3 +2,31 @@ Práctica para la asignatura Física galáctica
 
 Suponer un sistema autogravitante con simetría esférica y distribución exponencial de masa. Calcular y representar su potencial, su curva de velocidad, su masa integrada y su distribución proyectada de masa en función del radio y discutir los resultados.
 
+
+Programa python: pt.py
+Ejecución:
+La definición de la la distribución de densidad se coge desde un fichero 
+que puede contener operaciones python válidas donde los términos son los identificadores reservados e, pi y x(que se considera la variable de la función) y otras variables a cuales se pueden asignar varios valores en el momento de ejecución a través de unos sliders
+
+python pt.py
+	coge la definición del fichero rhodef (--rhodef=rhodef  por defecto)
+Opciones:
+--type=p|m|v|dp 
+Esta opción es para elegir la función que se representa: p es para el potencial, v para la velocidad, m para la masa y dp para la proyeccion de la distribución. Por defecto type=p
+--rhodef=<filename>
+Ejemplo:
+python pt.py --rhodef=rhodef1
+	coge la definición del fichero rhodef1	
+
+--test=<filename> 
+ Representa también el gráfico de la misma función calculada de otra forma(analítica) definida en el fichero
+<filename>.py. En el fichero hay que definir las funciones para cada tipo:  calculateP(numvars,K,r, startPoint), calculateM(numvars,K,r, startPoint), calculateV(numvars,K,r, startPoint), calculateDp(numvars,K,r, startPoint) donde numvars es un hash con los parametros variables de la función de densidad, K un array con las constantes de la integración, r el radio y startPoint el punto de cual empezamos a integrar (lasfunciones a integrar son continuas para x > 0 pero no siempre para x=0 y se integran empezando con el primer punto a representar mayor que 0) Ver los ficheros calc_exp.py y calc_exp_onevar.py
+
+--plotd 
+Con esta opción se representa también el gráfico de la densidad
+
+Ejemplo:
+	python pt.py --type=m --test=calc_exp_onevar --plotd
+
+
+Hay 2 sliders más para el gráfico del potencial y 1 para la masa y velocidad para poder variar las constantes de integración
