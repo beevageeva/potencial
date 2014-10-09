@@ -9,7 +9,7 @@ import sys,dis, os.path
 
 G = 6.6 * 10 **(-11)
 
-DEFAULT_NUMBER_POINTS = 50
+DEFAULT_NUMBER_POINTS = 1000
 
 
 def usage():
@@ -56,22 +56,21 @@ testFunction = None
 
 maxX = 2
 
-def startPoint():
-	#if nozero:
-		return float(maxX)/DEFAULT_NUMBER_POINTS
-	#else:
-	#	return 0
 
 if ptype == 'p':
 
 	label = "Potencial(J/kg)"
 	K = [0,0]	
 
+	#r here is only 1 element of r array we want to plot
 	def calculateFunction(r, rho):	
+		if(r==0):
+			return 0
+		epsilon = 0.0004
 		def f(x):
-			int1 = integrate.quad(lambda y: y**2 * rho(y), startPoint(), x )
-	 		return (1.0 / x**2) * int1[0] 
-		return 4* pi * G * integrate.quad(f, float(maxX)/DEFAULT_NUMBER_POINTS, r)[0] + K[0]/r + K[1]
+			int1 = integrate.quad(lambda y: y**2 * rho(y), 0, x )
+			return (1.0 / x**2) * int1[0]
+		return 4* pi * G * integrate.quad(f, epsilon, r)[0] + K[0]/r + K[1]
 	if testFilename:
 		testFunction = testplot.calculateP
 
@@ -80,7 +79,9 @@ elif ptype == 'v':
 	K = [0]	
 
 	def calculateFunction(r, rho):
-		int1 = integrate.quad(lambda y: y**2 * rho(y), startPoint(), r )	
+		if(r==0):
+			return 0
+		int1 = integrate.quad(lambda y: y**2 * rho(y), 0, r )	
 		t1 =  4.0 * pi * G * int1[0]
 		pr1 = t1 + K[0]
 		if(pr1<0):
@@ -105,7 +106,7 @@ elif ptype == 'm':
 	K = [0]	
 
 	def calculateFunction(r, rho):
-		int1 = integrate.quad(lambda y: y**2 * rho(y), startPoint(), r )	
+		int1 = integrate.quad(lambda y: y**2 * rho(y), 0, r )	
 		return  4.0 * pi *  int1[0] + K[0]
 	if testFilename:
 		testFunction = testplot.calculateM
@@ -121,7 +122,7 @@ numvars = {}
 
 rhof = open(rhodefFilename)
 rhoexpr = rhof.read().strip(' \t\n\r')
-print "Rho expression = "+ rhoexpr
+print("Rho expression = "+ rhoexpr)
 def parseLambdaString(expr):
 	tree = ast.parse(expr)
 	w = ast.walk(tree)
@@ -129,20 +130,25 @@ def parseLambdaString(expr):
 	stop = False
 	while(not stop):
 		try:
-			n=w.next()
-			print "index=" + str(index) + ", type = " + type(n).__name__
+			#python2 - 3
+			#http://www.diveinto.org/python3/porting-code-to-python-3-with-2to3.html
+			if (sys.version_info[0]==2):
+				n=w.next()
+			else:
+				n=w.__next__()
+			print("index=" + str(index) + ", type = " + type(n).__name__)
 			if((index==0) and (type(n).__name__!='Module')):
 				return False
 			if((index==1) and (type(n).__name__!='Expr')):
 				return False
 			if(type(n).__name__== 'Name'):
-				print "nametype, id="+n.id
+				print("nametype, id="+n.id)
 				if(not n.id in restricted_words):
-					print "NUMVAR"
+					print("NUMVAR")
 					numvars[n.id] = 1
 			index+=1
 		except StopIteration:
-			print "finish at : index="+str(index) 
+			print("finish at : index="+str(index)) 
 			stop = True
 	return True
 
@@ -156,6 +162,7 @@ for nv in numvars.keys():
 exec("rho = lambda x: " + newrhoexpr)
 
 updateGraph = True
+
 
 nplots = 1
 if(testFunction):
@@ -180,12 +187,13 @@ ax0.set_ylabel(label)
 plt.subplots_adjust(left=0.15, bottom=0.4)
 
 print("Start")
-print "K=" + str(K) +  ",Lambda:"
+print("K=" + str(K) +  ",Lambda:")
 print (dis.dis(rho))
 
 
 
-r=np.linspace(startPoint(),100,DEFAULT_NUMBER_POINTS)
+#r=np.linspace(float(100)/DEFAULT_NUMBER_POINTS,100,DEFAULT_NUMBER_POINTS)
+r=np.linspace(0,100,DEFAULT_NUMBER_POINTS)
 yvals = []
 for relem in r:
 	yvals.append(calculateFunction(relem, rho))
@@ -197,7 +205,7 @@ if(testFunction):
 	ax1 = ax[1]
 	yvalstest = []
 	for relem in r:
-		yvalstest.append(testFunction(numvars,K,relem, startPoint()))
+		yvalstest.append(testFunction(numvars,K,relem))
 	l2, = ax1.plot(r,yvalstest, lw=2, color='red')
 	ax1.set_ylabel(label)
 	ax1.autoscale_view(True,True,True)
@@ -276,19 +284,23 @@ sliderMaxx.on_changed(setSliderMaxX)
 
 
 def updateG():
+	#print("updateG numvars")
+	#print(numvars)
 	newrhoexpr = rhoexpr
 	for nv in numvars.keys():
 		newrhoexpr = newrhoexpr.replace(nv,str(numvars[nv]))
-	exec("rho = lambda x: " + newrhoexpr)
+	#print("updateG newrhoexpr")
+	#print(newrhoexpr)
+	#TODO PYTHON3 exec for lamda assignment is NOT working
+	#exec("rho = lambda x: " + newrhoexpr, {"rho": rho}, None)
+	rho = eval("lambda x: %s" % newrhoexpr)
 	print("CALL updateG maxX = %d" % maxX)
-	print "K=" + str(K) +  ",Lambda:"
-	print (dis.dis(rho))
-	print("rho in updateG")
+	print("K=" + str(K) +  ",Rho:")
 	print (dis.dis(rho))
 	txt = plt.text(-5.5, 0.5, "recalculating")
 	fig.canvas.draw()
 	yvals = []
-	r=np.linspace(startPoint(),int(10**maxX),DEFAULT_NUMBER_POINTS)
+	r=np.linspace(float(10**maxX)/DEFAULT_NUMBER_POINTS ,int(10**maxX),DEFAULT_NUMBER_POINTS)
 	#print("xvals")
 	#print(r)
 	for relem in r:
@@ -305,7 +317,7 @@ def updateG():
 	if(testFunction):
 		yvalstest = []
 		for relem in r:
-			yvalstest.append(testFunction(numvars,K,relem, startPoint()))
+			yvalstest.append(testFunction(numvars,K,relem))
 		l2.set_xdata(r)
 		l2.set_ydata(yvalstest)
 		#TODO why necessary
@@ -350,7 +362,7 @@ button.on_clicked(reset)
 
 
 
-plt.show()
+plt.show(block=True)
 
 
 
