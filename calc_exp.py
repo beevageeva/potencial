@@ -47,7 +47,8 @@ def calculateM(numvars, K , r):
 	testNumvars(numvars)
 	B = numvars["B"]
 	A = numvars["A"]
-	return (-4 * pi * A / B) * (- 2* B**(-2) + 2 * B ** (-2) * e ** (-B * r) + 2 / B * r * e ** (-B * r) + r ** 2 * e ** (-B * r) ) + K[0]
+	t1 = e ** (-B * r)
+	return (-4 * pi * A / B) * (- 2* B**(-2) + 2 * B ** (-2) * t1 + (2.0 / B) * r * t1 + r ** 2 * t1 ) + K[0]
 
 def calculateDp(numvars, K , s):
 	testNumvars(numvars)
