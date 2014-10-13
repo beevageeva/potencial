@@ -8,7 +8,7 @@ from math import sqrt
 import numpy as np
 
 numPoints = 1000
-domMult = 15
+domMult = 10000
 
 
 def densFunc(r,rhoC, r0):
@@ -70,7 +70,7 @@ def massFunc(r, rhoC, r0):
 	res = np.zeros(r.shape)
 	i = 0
 	for x in r:
-		int1 = integrate.quad(lambda y: y**2 * densFunc(x, rhoC, r0), 0, x )	
+		int1 = integrate.quad(lambda y: y**2 * densFunc(y, rhoC, r0), 0, x )	
 		res[i] =  4.0 * pi *  int1[0]
 		i+=1
 	return res
@@ -78,7 +78,8 @@ def massFunc(r, rhoC, r0):
 
 
 def plotForRhoC(rhoC):
-	r0Array = [0.5, 1.0, 2.0]
+	#r0Array = [0.5, 1.0, 2.0]
+	r0Array = [1.0]
 	maxX = max(r0Array) * domMult
 	r = np.arange(0,maxX,maxX / numPoints)
 	plt.cla()
@@ -129,10 +130,10 @@ def plotForRhoC(rhoC):
 		
 		plt.title('Mass for rho = rhoC * exp(-r/r0) , rhoC = %5.1f' % rhoC)
 	#plotDensFunc()
-	#plotPotFunc()
+	plotPotFunc()
 	#plotVcFunc()
 	#plotDpFunc()
-	plotMassFunc()
+	#plotMassFunc()
 	plt.grid(True)
 	plt.legend()
 	plt.draw()
@@ -161,9 +162,8 @@ def plotForRadius(r0):
 
 
 	def plotPotFunc(plotFirst, plotSecond):
-		plt.plot(r, potFunc(r, 0.5, plotFirst,plotSecond), label='rhoC=0.5')
-		plt.plot(r, potFunc(r, 1.0, plotFirst, plotSecond), label='rhoC=1.0')
-		plt.plot(r, potFunc(r, 2.0, plotFirst, plotSecond), label='rhoC=2.0')
+		for rhoC in rhoCArray:
+			plt.plot(r, potFunc(r, rhoC, r0), label='rhoC=%2.1f' % rhoC)
 		
 		plt.xlabel('radius')
 		plt.ylabel('pot')
@@ -171,14 +171,12 @@ def plotForRadius(r0):
 		plt.title('Pot for rho = rhoC * exp(-r/r0) , r0 = %5.1f' % r0)
 
 	def plotVcFunc():
-		plt.plot(r, vcFunc(r, 0.5), label='rhoC=0.5')
-		plt.plot(r, vcFunc(r, 1.0), label='rhoC=1.0')
-		plt.plot(r, vcFunc(r, 2.0), label='rhoC=2.0')
-		
+		for rhoC in rhoCArray:
+			plt.plot(r, vcFunc(r, rhoC, r0), label='rhoC=%2.1f' % rhoC)
 		plt.xlabel('radius')
-		plt.ylabel('pot')
+		plt.ylabel('vc')
 		
-		plt.title('Pot for rho = rhoC * exp(-r/r0) , r0 = %5.1f' % r0)
+		plt.title('Vc for rho = rhoC * exp(-r/r0) , r0 = %5.1f' % r0)
 
 	def plotDpFunc():
 		for rhoC in rhoCArray:
@@ -224,6 +222,7 @@ def plotDensFuncDifR():
 #plotForRadius(100.0)
 #plotForRadius(10000.0)
 plotForRhoC(1.0)
+
 
 #for r0 in (1.0, 100.0, 10000.0):
 #	plotForRadius(r0)

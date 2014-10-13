@@ -26,7 +26,8 @@ def calculateP(numvars,K,r):
 	A = numvars["A"]
 	int1 = integrate.quad(lambda a: a ** (-2) * e ** (-B * a) , epsilon, r )[0]
 	int2 = integrate.quad(lambda a: a ** (-1) * e ** (-B * a) , epsilon, r )[0]
-	result = (4 * pi * G * A / B ** 2)* (2.0/B * (1.0/epsilon - 1.0/r)  -int1 / B - 2.0  * int2  + e ** (-B * r)) + K[0] / r  + K[1]
+	#result = (4 * pi * G * A / B ** 2)* (2.0/B * (1.0/epsilon - 1.0/r)  -int1 / B - 2.0  * int2  + e ** (-B * r)) + K[0] / r  + K[1]
+	result = (4 * pi * G * A / B ** 2)* (2.0/B * (1.0/epsilon - 1.0/r)  -int1 / B - 2.0  * int2  + e ** (-B * r)) 
 	return result
 
 def calculateV(numvars, K , r):
