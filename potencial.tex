@@ -96,7 +96,7 @@ Miramos el gráfico de la función: f(r) = rhoC * exp(-r/r0)
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{func1Plot.png}
- \caption{\emph{rhoC * exp(-r/r0)}}
+ \caption{\emph{$r^2  \rho_c  e^{\frac{-r}{r0}}$}}
 \end{figure}
 observamos que  f es  continua y f(0) = 0
 \item  $\int{r^2 e^{-Br}dr} = \int_0^r{x^2 e^{-Bx}dx}$
@@ -110,7 +110,7 @@ que no está definida en 0 pero es continua en (0,$\infty$) y $  \lim_{x \unders
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{func2Plot.png}
- \caption{\emph{rhoC * exp(-r/r0)}}
+ \caption{\emph{$\frac{1}{r^2}\int_0^r{x^2  \rho_c  e^{\frac{-x}{r0}}dx}   $}}
 \end{figure}
 
 
@@ -184,7 +184,7 @@ Se muestran los gráficos para la función de densidad $ rhoC * e^{\frac{-r}{r_0
 
 
 \begin{itemize}
-	\item Hay otro programa python mas general que tiene como entrada la función de densidad (que puede tener parámetros que se pueden variar durante la ejecución a través de un slider) y calcula el potencial, velocidad circular, masa y distribución proyectada de masa según el caso general, pero tiene la posibilidad de representar el gráfico de las funciones calculadas de modo analítico
+	\item Hay otro programa python mas general que tiene como entrada la función de densidad (que puede tener parámetros que se pueden variar durante la ejecución a través de un slider) y calcula el potencial, velocidad circular, masa y distribución proyectada de masa según el caso general, pero tiene la posibilidad de representar el gráfico de las funciones calculadas de modo analítico (ver readme en la misma carpeta)
 \item Para el potencial resolver la ecuación diferencial de segundo grado implica tener 2 constantes de integración, para la $V_c$ y masa hay solo una, variando la segunda constante en el caso del potencial y la única constante para la masa y velocidad y distribución proyectada solo hace una traslación a los gráficos de las funciones(sumando la constante), pero la forma queda igual así que solo tiene sentido tener en cuenta variar K1 en el caso del potencial 
 \item Hay un slider con cual se puede cambiar el rango del radius desde 10**1 hasta 10**30
 \item Se muestran los gráficos en el caso A = B = 1 ($\implies r_0= \rho_c =1$) y constantes de integración 0 para poder comprobarlos con los otros (donde hay 2 gráficos, el segundo está calculado con las fórmulas de la integración por partes: ver calc\_exp.py)
@@ -213,147 +213,9 @@ Se muestran los gráficos para la función de densidad $ rhoC * e^{\frac{-r}{r_0
  \caption{\emph{Densidad proyectada}}
 \end{figure}
 
-\item Las figuras son las salidas para el caso  $ A > 0, B > 0 $ - el segundo gráfico es de la función calculada de forma analítica (con las fórmulas de la integración por partes, donde se añadieron las constantes de inetgarción)
-\item La situación $ A < 0, B < 0 $ según se verá en los gráficos no tiene sentido físico. Además la función para determinar la distribución de densidad proyectada no es integrable
-
-\end{itemize}
-Potencial
-\begin{itemize}
-\item K1<0 hace que el término K1/r domine 
-
-\item K1=0, el potencial crece desde 0 de forma asymptotica, la forma del gráfico no cambia variando A 
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.4]{p11.png}
- \caption{\emph{Potencial A mayor que 0, B = 1}}
- \label{Fig: 1}
-\end{figure}
-
- 
 \end{itemize}
 
 
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{potencial1.png}
- \caption{\emph{Potencial A = 1, rango del radio hasta 3*10**9}}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{potencial3.png}
- \caption{\emph{Potencial A mayor que 1}}
- \label{Fig: 3}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{potencial2.png}
- \caption{\emph{Potencial A = 1}}
- \label{Fig: 2}
-\end{figure}
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{potencial4.png}
- \caption{\emph{Potencial A in (0,1) }}
- \label{Fig: 1}
-\end{figure}
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{potencial5.png}
- \caption{\emph{Potencial  A menor que 0}}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{velocity4.png}
- \caption{\emph{Vc A mayor que 1}}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{velocity.png}
- \caption{\emph{Velocidad A = 1}}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{velocity2.png}
- \caption{\emph{Vc A in (0,1) }}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{velocity3.png}
- \caption{\emph{Velocidad circular A menor que 0}}
- \label{Fig: 1}
-\end{figure}
-
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{masa4.png}
- \caption{\emph{Masa mayor que 1 }}
- \label{Fig: 1}
-\end{figure}
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{masa1.png}
- \caption{\emph{Masa A = 1}}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{masa2.png}
- \caption{\emph{Masa A in (0,1) }}
- \label{Fig: 1}
-\end{figure}
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{masa3.png}
- \caption{\emph{Masa A menor que 0}}
- \label{Fig: 1}
-\end{figure}
-
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{dp1.png}
- \caption{\emph{Distribución proyectada A = 1}}
- \label{Fig: 1}
-\end{figure}
-
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{dp2.png}
- \caption{\emph{Distribución proyectada A mayor que 1}}
- \label{Fig: 1}
-\end{figure}
-
-\begin{figure}[!h]
- \centering
- \includegraphics[scale=0.7]{dp3.png}
- \caption{\emph{Distribucion proyectada A in (0,1) }}
- \label{Fig: 1}
-\end{figure}
 
 
 
