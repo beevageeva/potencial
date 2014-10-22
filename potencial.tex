@@ -45,12 +45,12 @@ v_c^2(r) = \frac{4\pi G}{r}\int{r^2\rho(r)dr} + \frac{K}{r}, K \in \mathbb{R} \i
 v_c(r) = (\frac{4 \pi G}{r}\int{r^2\rho(r)dr} + \frac{K}{r})^{\frac{1}{2}}, K \in \mathbb{R}
 $
 \item La masa $M(r) = 4 \pi \int{r^2\rho(r)dr} + K, K \in \mathbb{R}$
-\item En un sistema con simetria esférica: la proyección de una función f(r) en el plano y,z (a lo largo de la línea de visión OX)es la funcción: 
-$F(s) = \int_{-\infty}^\infty{f(r)dx}$
+\item Las constantes de integración se eligen de tal forma que verifiquen las condiciones de contorno:
+ $\lim_{x \to +\infty}\Phi(x) = 0, v_c(0) = 0, M(0) = 0$
 
-$x^2 = r^2 - s^2 \implies dx = \frac{r dr}{\sqrt{r^2 - s^2}} \implies$
-$F(s) =  2\int_s^\infty{\frac{r f(r)}{\sqrt{r^2-s^2}}dr}, s^2=y^2 + z^2$(s es el radio proyectado) (\url{http://en.wikipedia.org/wiki/Abel\_transform})
-\item La proyección de la distribución de densidad en el plano Y0Z $D_p(s) =  2\int_s^\infty{\frac{r \rho(r)}{\sqrt{r^2-s^2}}dr}$,$s^2 = y^2 + z^2$ 
+\item En un sistema con simetria esférica: la proyección de una función f(r) en el plano y,z (a lo largo de la línea de visión OX)es la funcción: 
+$F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro del circulo en el plano proyectado ($s^2 = y^2 + z^2$)
+\item $r^2 = x^2 + s^2$ y la simetría esférica $ \implies  F(s) =  2\lvert \int_0^\infty{f(\sqrt{x^2+s^2})dx} \rvert  $
 
 \begin{tikzpicture}[scale=.8]
 
@@ -80,19 +80,15 @@ $F(s) =  2\int_s^\infty{\frac{r f(r)}{\sqrt{r^2-s^2}}dr}, s^2=y^2 + z^2$(s es el
 
 \section*{Problema de la práctica}
 \begin{description}
-\item Hipótesis: $\rho(r) = Ae^{-Br} = rhoC \dot e^{-\frac{r}{r_0}}, A,B > 0, rhoC = A, r_0=frac{1}{B}$  en un sistema con simetria esférica
+\item Hipótesis: $\rho(r) = \rho_c e^{-\frac{r}{r_0}} $
 \item Determinar $\Phi(r)$, M(r),$M_p(r)$, $v_c(r)$ 
 
 \end{description}
 
 
 \begin{description}
-\item $\Phi(r) = 4 \pi G A \int{ \frac{1}{r^2}(\int{a^2 e^{-Ba}da})dr} + \frac{K_1}{r} + K_2$
-
-
-
-\item Para poder calcular las integrales de forma numérica establecemos los límites de integración y cogemos los constantes 0
-Miramos el gráfico de la función: f(r) = rhoC * exp(-r/r0)
+\item Para calcular estas funciones de forma numérica hay que establecer los límites de integración y las constantes
+\item Miramos el gráfico de la función:$ f(r) = r^2 \rho_c  exp(-r/r0)$
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{func1Plot.png}
@@ -102,9 +98,6 @@ observamos que  f es  continua y f(0) = 0
 \item  $\int{r^2 e^{-Br}dr} = \int_0^r{x^2 e^{-Bx}dx}$
 
 
-\item Integrando por partes 2 veces:
-\item $\int_0^r{x^2 e^{-Bx}dx} = - \frac{1}{B} \int_0^r{x^2 (e^{-Bx})\prime dx}
-=-\frac{1}{B}( (x^2 e^{-Bx})\Big|_0^r  - 2\int_0^r{x e^{-Bx}dx})  = -\frac{2}{B^2}\int_0^r{x (e^{-Bx})\prime dx} - \frac{1}{B}r^2 e^{-Br} = -\frac{2}{B^2}((x e^{-Bx})\Big|_0^r - \int_0^r{e^{-Bx}dx}) - \frac{1}{B}r^2 e^{-Br} = -\frac{2}{B^3}e^{-Bx}\Big|_0^r -\frac{2}{B^2}r e^{-Br} - \frac{1}{B}r^2 e^{-Br} = \frac{2}{B^3} -\frac{2}{B^3}e^{-Br} -\frac{2}{B^2}r e^{-Br} - \frac{1}{B}r^2 e^{-Br}  $
 \item Miramos el gráfico de la función $f(r) = \frac{1}{r^2}  \int_0^r{\rho_c  e^{-\frac{r}{r0}}}$
 que no está definida en 0 pero es continua en (0,$\infty$) y $  \lim_{x \underset{>}{\to} 0} f(x) = 0$
 \begin{figure}[!ht]
@@ -112,22 +105,15 @@ que no está definida en 0 pero es continua en (0,$\infty$) y $  \lim_{x \unders
  \includegraphics[scale=0.33]{func2Plot.png}
  \caption{\emph{$\frac{1}{r^2}\int_0^r{x^2  \rho_c  e^{\frac{-x}{r0}}dx}   $}}
 \end{figure}
-
-
-
-\item $\implies \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{y^2 e^{-By}dy})dx} = 
--\frac{1}{B}(-\frac{2}{B^2}\int_\varepsilon^r{\frac{1}{x^2}dx} +\frac{1}{B^2}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx}  + \frac{2}{B}\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} + \int_\varepsilon^r{e^{-Bx}dx} ) = 
-\frac{1}{B^2}(\frac{2}{B}(\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-Br} - \frac{1}{B}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} ) $
-
-\item $\implies \Phi(r) = \frac{4 \pi G A}{B^2}(\frac{2}{B}(\frac{1}{\varepsilon} - \frac{1}{r}) + e^{-Br} - \frac{1}{B}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} ) $
-
-
-\item $M(r) = 4 \pi A \int_0^r{x^2 e^{-Bx}dx} = -\frac{4 \pi A}{B}( -\frac{2}{B^2} + \frac{2}{B^2}e^{-Br} +\frac{2}{B}r e^{-Br} + r^2 e^{-Br}) $
+\item $\Phi(r) = 4 \pi G \rho_c \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{a^2 e^{-\frac{a}{r_0}}da})dx} + K_2$
+(elegimos $K_1 = 0$ y $K_2$  de tal manera que $\lim_{x \to +\infty}\Phi(x) = 0 $, en práctica $K_2 = -\Phi(R_{max})$)
+\item $v_c(r) = (\frac{4 \pi G \rho_c}{r}\int_0^r{x^2 e^{-\frac{x}{r_0}}dx} )^{\frac{1}{2}}  $ (la constante de integración es 0 porque $v_c(0) = 0$)
+\item $M(r) = 4 \pi \rho_c \int_0^r{x^2 e^{-\frac{x}{r_0}}dx}$ (la constante de integración es 0 porque $M(0) = 0$) 
 \item La proyección de la distribución de densidad en el plano YOZ
-$D_p(s) = 2 A \int_s^\infty{\frac{r}{\sqrt{r^2-s^2}} e^{-Br} dr}$
+$D_p(s) = 2 \rho_c \lvert \int_0^\infty{e^{-\frac{\sqrt{s^2 + x^2}}{r_0}} dx}  \rvert$
 
-\item $v_c(r) = (\frac{4 \pi G A}{r}\int_0^r{x^2 e^{-Bx}dx} )^{\frac{1}{2}}   
-= (-\frac{4 \pi G A}{B}(\frac{2}{B^2r}e^{-Br} +\frac{2}{B} e^{-Br} + r e^{-Br} -  \frac{2}{B^2r} ))^{\frac{1}{2}} $
+
+
 
 \end{description}
 
@@ -135,7 +121,9 @@ $D_p(s) = 2 A \int_s^\infty{\frac{r}{\sqrt{r^2-s^2}} e^{-Br} dr}$
 \begin{description}
 \item Los gráficos se realizaron con un programa python (en el repositorio git: \url{https://github.com/beevageeva/potencial} ) tomando las constantes de integración 0 y usando las expresiones iniciales(sin hacer la integración por partes). 
 Las integraciones se calculan de forma numérica y observando los gráficos de las funciones que se integran estas son continuas y tienen el valor 0 en el punto 0 así que se pueden tomar los límites de integración 0 y r.
-Se muestran los gráficos para la función de densidad $ rhoC * e^{\frac{-r}{r_0} }$ variando rhoC y $r_0$ con valores 0.5, 1 y 2
+Se muestran los gráficos  para $\rho_c$ en $ \{0.5 * 10^5, 10^5, 1.5 * 10^5, 2.0 * 10^5 \} $y $r_0$ en $\{0.5 * 10^9, 10^9, 1.5 * 10^9 ,2 * 10^9 \}$. 
+Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, velocidad m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
+
 
 
 \item
@@ -177,13 +165,36 @@ Se muestran los gráficos para la función de densidad $ rhoC * e^{\frac{-r}{r_0
  \includegraphics[scale=0.33]{dpFinal.png}
  \caption{\emph{Densidad proyectada}}
 \end{figure}
+
 \end{description}
 
 
 \clearpage
 
+\section{Solución semianalítica}
+\begin{itemize}
+
+\item  $\rho(r) = Ae^{-Br} = \rho_c  e^{-\frac{r}{r_0}}, A,B > 0, \rho_c = A, r_0=\frac{1}{B}$  en un sistema con simetria esférica
+\item Integrando por partes 2 veces:
+\item $\int_0^r{x^2 e^{-Bx}dx} = - \frac{1}{B} \int_0^r{x^2 (e^{-Bx})\prime dx}
+=-\frac{1}{B}( (x^2 e^{-Bx})\Big|_0^r  - 2\int_0^r{x e^{-Bx}dx})  = -\frac{2}{B^2}\int_0^r{x (e^{-Bx})\prime dx} - \frac{1}{B}r^2 e^{-Br} = -\frac{2}{B^2}((x e^{-Bx})\Big|_0^r - \int_0^r{e^{-Bx}dx}) - \frac{1}{B}r^2 e^{-Br} = -\frac{2}{B^3}e^{-Bx}\Big|_0^r -\frac{2}{B^2}r e^{-Br} - \frac{1}{B}r^2 e^{-Br} = \frac{2}{B^3} -\frac{2}{B^3}e^{-Br} -\frac{2}{B^2}r e^{-Br} - \frac{1}{B}r^2 e^{-Br}  $
+
+\item $\implies \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{y^2 e^{-By}dy})dx} = 
+-\frac{1}{B}(-\frac{2}{B^2}\int_\varepsilon^r{\frac{1}{x^2}dx} +\frac{1}{B^2}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx}  + \frac{2}{B}\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} + \int_\varepsilon^r{e^{-Bx}dx} ) = 
+\frac{1}{B^2}(\frac{2}{B}(\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-Br} - \frac{1}{B}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} ) $
+
+\item $\implies \Phi(r) = \frac{4 \pi G A}{B^2}(\frac{2}{B}(\frac{1}{\varepsilon} - \frac{1}{r}) + e^{-Br} - \frac{1}{B}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} ) $
+
+
+\item $M(r) = 4 \pi A \int_0^r{x^2 e^{-Bx}dx} = -\frac{4 \pi A}{B}( -\frac{2}{B^2} + \frac{2}{B^2}e^{-Br} +\frac{2}{B}r e^{-Br} + r^2 e^{-Br}) $
+
+\item $v_c(r) = (\frac{4 \pi G A}{r}\int_0^r{x^2 e^{-Bx}dx} )^{\frac{1}{2}}   
+= (-\frac{4 \pi G A}{B}(\frac{2}{B^2r}e^{-Br} +\frac{2}{B} e^{-Br} + r e^{-Br} -  \frac{2}{B^2r} ))^{\frac{1}{2}} $
+\end{itemize}
+
 
 \begin{itemize}
+
 	\item Hay otro programa python mas general que tiene como entrada la función de densidad (que puede tener parámetros que se pueden variar durante la ejecución a través de un slider) y calcula el potencial, velocidad circular, masa y distribución proyectada de masa según el caso general, pero tiene la posibilidad de representar el gráfico de las funciones calculadas de modo analítico (ver readme en la misma carpeta)
 \item Para el potencial resolver la ecuación diferencial de segundo grado implica tener 2 constantes de integración, para la $V_c$ y masa hay solo una, variando la segunda constante en el caso del potencial y la única constante para la masa y velocidad y distribución proyectada solo hace una traslación a los gráficos de las funciones(sumando la constante), pero la forma queda igual así que solo tiene sentido tener en cuenta variar K1 en el caso del potencial 
 \item Hay un slider con cual se puede cambiar el rango del radius desde 10**1 hasta 10**30

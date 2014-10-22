@@ -3,7 +3,7 @@ from scipy import integrate
 from math import pi
 matplotlib.use('GTKAgg')
 import matplotlib.pyplot as plt
-from math import sqrt
+from math import sqrt, e
 
 import numpy as np
 
@@ -36,21 +36,15 @@ def densFunc(r,rhoC, r0):
 
 
 def potFunc(r, rhoC, r0):
-	#G = 1
-	#plot function
-	
-	def f(x):
-		#int1 = integrate.quad(lambda y: y**2 * densFunc(y, rhoC, r0), 0, x , limit=NPOINTSQUAD)
-		int1 = integrate.quad(lambda y: y**2 * densFunc(y, rhoC, r0), 0, x)
-		return (1.0 / x**2) * int1[0]
-	
 	epsilon = 0.0001
 	res = np.zeros(r.shape)
 	i = 0
 	for x in r:
-		#res[i] =  4* pi * G * integrate.quad(f, 0, x, points=[0], limit=NPOINTSQUAD)[0]  ->float division by 0 in 0
-		#res[i] =  4* pi * G * integrate.quad(f, epsilon, x, limit=NPOINTSQUAD)[0]
-		res[i] =  4* pi * G * integrate.quad(f, epsilon, x)[0]
+		if x ==0:
+			x = epsilon
+		int1 = integrate.quad(lambda a: a ** (-2) * e ** (-a/r0) , epsilon, x )[0]
+		int2 = integrate.quad(lambda a: a ** (-1) * e ** (-a/r0) , epsilon, x )[0]
+		res[i] = (4 * pi * G * rhoC *r0 ** 2)* (2.0 * r0 * (1.0/epsilon - 1.0/x)  -int1 *r0 - 2.0  * int2  + e ** (-x/r0)) 
 		i+=1
 	return res - res[i-1]
 	#not working
@@ -64,8 +58,7 @@ def vcFunc(r, rhoC, r0):
 	for x in r:
 		if x == 0:
 			x = epsilon
-		int1 = integrate.quad(lambda y: y**2 * densFunc(y, rhoC, r0), 0, x)
-		t1 =  (4.0 * pi * G * int1[0]) / x
+		t1 =  (-4.0 * pi * G  * rhoC *  r0 ) * (2 * r0 **2 * r **(-2) * e ** (- r/r0) + 2 * r0  * r ** (-1) * e ** (-r/r0) +  e **(-r/r0) - 2 * r0**2/r )	
 
 		if(t1<0):
 			print("vc**2 for r = %4.2f negative=%4.2f t1=%4.2f, return 0"%(x, pr1, t1))
@@ -77,23 +70,14 @@ def vcFunc(r, rhoC, r0):
 			 
 
 
-def dpFunc(r, rhoC, r0):
-	res = np.zeros(r.shape)
-	i = 0
-	for x in r:
-		#int1 = integrate.quad(lambda y: (y * densFunc(y, rhoC, r0))/sqrt(y**2-x**2), 0.0001, np.inf)	
-		int1 = integrate.quad(lambda y: densFunc(sqrt(y**2 + x**2), rhoC, r0), 0, np.inf)	
-		res[i] =  2 *  abs(int1[0]) 
-		i+=1
-	return res
 
 
 def massFunc(r, rhoC, r0):
 	res = np.zeros(r.shape)
 	i = 0
 	for x in r:
-		int1 = integrate.quad(lambda y: y**2 * densFunc(y, rhoC, r0), 0, x)	
-		res[i] =  4.0 * pi *  int1[0]
+		t1 = e ** (-B * r)
+		res[i] =  (-4 * pi * rhoC * r0) * (- 2* r0**2 + 2 * r0 **2 * t1 + 2.0 *r0 * r * t1 + r ** 2 * t1 ) 
 		i+=1
 	return res
  
@@ -251,6 +235,6 @@ def plotForRadius(r0, fType):
 import datetime as dt
 
 #plotForRadius(r0Fixed, "dp")
-plotForRhoC(rhoCFixed, "dp")
+plotForRhoC(rhoCFixed, "p")
 
 
