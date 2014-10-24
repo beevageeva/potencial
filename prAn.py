@@ -2,6 +2,7 @@ import matplotlib
 from scipy import integrate
 from math import pi
 matplotlib.use('GTKAgg')
+matplotlib.rcParams['axes.titlesize'] = 'small'
 import matplotlib.pyplot as plt
 from math import sqrt, e
 
@@ -18,14 +19,10 @@ Rmax = 10**11
 
 
 G = 6.6 * 10 **(-11)
-r0Array = [0.5*10**10, 1.0*10**10, 1.5 * 10**10, 2.0*10**10]
 r0Fixed = 1.0*10**10
-rhoCArray = [0.5 * 10**5, 1.0*10**5, 1.5*10**5, 2.0*10**5]
 rhoCFixed = 1.0*10**5
 
 
-#legendUp = False
-legendUp = True
 
 #r = np.arange(0,Rmax,Rmax / numPoints)
 r = np.linspace(0,Rmax,numPoints)
@@ -35,7 +32,7 @@ def densFunc(r,rhoC, r0):
 
 
 
-def potFunc(r, rhoC, r0):
+def potFunc1(r, rhoC, r0):
 	epsilon = 0.0001
 	res = np.zeros(r.shape)
 	i = 0
@@ -51,58 +48,81 @@ def potFunc(r, rhoC, r0):
 	#return 4* pi * G * integrate.quad(f, 0, r)[0]
 
 
-def vcFunc(r, rhoC, r0):
+
+
+def potFunc(r, rhoC, r0):
+	epsilon = 0.0001
+	eps = 1
 	res = np.zeros(r.shape)
 	i = 0
-	epsilon = 0.0001
 	for x in r:
-		if x == 0:
+		if x ==0:
 			x = epsilon
-		t1 =  (-4.0 * pi * G  * rhoC *  r0 ) * (2 * r0 **2 * r **(-2) * e ** (- r/r0) + 2 * r0  * r ** (-1) * e ** (-r/r0) +  e **(-r/r0) - 2 * r0**2/r )	
-
-		if(t1<0):
-			print("vc**2 for r = %4.2f negative=%4.2f t1=%4.2f, return 0"%(x, pr1, t1))
-			res[i] = 0
-		else:	
-			res[i] = sqrt(t1)
+		#int2 = integrate.quad(lambda a: a ** (-1) * e ** (-a/r0) , eps, x )[0]
+		#int2 = integrate.quad(lambda a: a ** (-1) * e ** (-a/r0) ,  x, np.inf )[0]
+		int2 = integrate.quad(lambda a: a ** (-1) * e ** (-a/r0) ,  -np.inf , x)[0]
+		#res[i] = (4 * pi * G * rhoC *r0 ** 2)* (2.0 * r0 * (1.0/eps - 1.0/x)  + r0 * (e**(-x/r0)/x - e**(-eps/r0)/eps) -  int2  + e ** (-x/r0)) 
+		res[i] = (4 * pi * G * rhoC *r0 ** 2)* (-2.0 * r0 *  1.0/x  + r0 * e**(-x/r0)/x  -  int2  + e ** (-x/r0)) 
 		i+=1
 	return res
+	
+
+def potFuncMath(r, rhoC, r0):
+	return (4 * pi * G * rhoC ) * np.exp(-r/r0) * r0 * (r0 + 2 * r0**2 / r)
+
+
+
+def vcFunc(r, rhoC, r0):
+	t2 = e ** (-r/r0)	
+	t1 =  (-4.0 * pi * G  * rhoC *  r0 ) * (2 * r0 **2 * r **(-2) * t2 + 2 * r0  * r ** (-1) * t2 +  t2 - 2 * r0**2/r )	
+	return np.sqrt(t1)
+
+#	res = np.zeros(r.shape)
+#	i = 0
+#	epsilon = 0.0001
+#	for x in r:
+#		if x == 0:
+#			x = epsilon
+#		t1 =  (-4.0 * pi * G  * rhoC *  r0 ) * (2 * r0 **2 * x **(-2) * e ** (- x/r0) + 2 * r0  * x ** (-1) * e ** (-x/r0) +  e **(-x/r0) - 2 * r0**2/x )	
+#
+#		if(t1<0):
+#			print("vc**2 for r = %4.2f negative=%4.2f t1=%4.2f, return 0"%(x, pr1, t1))
+#			res[i] = 0
+#		else:	
+#			res[i] = sqrt(t1)
+#		i+=1
+#	return res
 			 
 
 
 
 
 def massFunc(r, rhoC, r0):
-	res = np.zeros(r.shape)
-	i = 0
-	for x in r:
-		t1 = e ** (-B * r)
-		res[i] =  (-4 * pi * rhoC * r0) * (- 2* r0**2 + 2 * r0 **2 * t1 + 2.0 *r0 * r * t1 + r ** 2 * t1 ) 
-		i+=1
-	return res
+	t1 = e ** (-r/r0)
+	return  4 * pi * rhoC * r0 * (2* r0**2 - 2 * r0 **2 * t1 - 2.0 *r0 * r * t1 - r ** 2 * t1 ) 
+	#element by element
+#	res = np.zeros(r.shape)
+#	i = 0
+#	for x in r:
+#		t1 = e ** (-x/r0)
+#		res[i] =  (-4 * pi * rhoC * r0) * (- 2* r0**2 + 2 * r0 **2 * t1 + 2.0 *r0 * x * t1 + x ** 2 * t1 ) 
+#		i+=1
+#	return res
  
 def plotForAll(plotFunction):
 	plotFunction()
 	plt.grid(True)
-	if not legendUp:	
-		plt.legend()
-	else:
-		ax = plt.gca()
-		box = ax.get_position()
-		ax.set_position([box.x0, box.y0, box.width , box.height*0.85])
-		plt.legend(loc='lower center', bbox_to_anchor=(0.5, 1.05),  ncol=2)
 	plt.draw()
 	
 	#plt.savefig("densNPRM10-%d.png" % int(r0))
 	plt.show(block=True)
 	#plt.pause(10)
 
-def plotForRhoC(rhoC , fType):
+def plotForRhoC(rhoC , r0, fType):
 	plt.cla()
 
 	def plotDensFunc():
-		for r0 in r0Array:
-			plt.plot(r, densFunc(r, rhoC, r0), label='r0=%.1e' % r0)
+		plt.plot(r, densFunc(r, rhoC, r0), label='r0=%.1e' % r0)
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('density(kg/m3)')
@@ -111,26 +131,23 @@ def plotForRhoC(rhoC , fType):
 
 
 	def plotPotFunc():
-		for r0 in r0Array:
-			plt.plot(r, potFunc(r, rhoC, r0), label='r0=%.1e' % r0)
+		#plt.plot(r, potFunc(r, rhoC, r0))
+		plt.plot(r, potFuncMath(r, rhoC, r0))
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('V(J/kg)')
-		plt.title('Pot for rho = rhoC * exp(-r/r0) , rhoC = %.1e' % rhoC)
+		plt.title('Pot for rho = rhoC * exp(-r/r0), rhoC = %.1e, r0=%.1e' % (rhoC, r0))
 
 	def plotVcFunc():
-		for r0 in r0Array:
-			plt.plot(r, vcFunc(r, rhoC, r0), label='r0=%.1e' % r0)
-			#print("r0=%.1e,vc(r0)=%.1e" % (r0, vcFunc(np.array([r0]), rhoC, r0)[0]))
+		plt.plot(r, vcFunc(r, rhoC, r0), label='r0=%.1e' % r0)
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('vc(m/s)')
 		
-		plt.title('Vc for rho = rhoC * exp(-r/r0) , rhoC = %.1e' % rhoC)
+		plt.title('Vc for rho = rhoC * exp(-r/r0), rhoC = %.1e, r0 = %.1e' % (rhoC, r0))
 	
 	def plotDpFunc():
-		for r0 in r0Array:
-			plt.plot(r, dpFunc(r, rhoC, r0), label='r0=%.1e' % r0)
+		plt.plot(r, dpFunc(r, rhoC, r0), label='r0=%.1e' % r0)
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('dens. proj.(Kg/m2)')
@@ -138,13 +155,12 @@ def plotForRhoC(rhoC , fType):
 		plt.title('Proj. dens. for rho = rhoC * exp(-r/r0) , rhoC = %.1e' % rhoC)
 
 	def plotMassFunc():
-		for r0 in r0Array:
-			plt.plot(r, massFunc(r, rhoC, r0), label='r0=%.1e' % r0)
+		plt.plot(r, massFunc(r, rhoC, r0))
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('mass(Kg)')
 		
-		plt.title('Mass for rho = rhoC * exp(-r/r0) , rhoC = %.1e' % rhoC)
+		plt.title('Mass for rho = rhoC * exp(-r/r0), rhoC = %.1e, r0=%.1e' % (rhoC, r0))
 	if(fType=="p"):
 		plotFunc = plotPotFunc
 	elif(fType=="v"):
@@ -164,77 +180,8 @@ def plotForRhoC(rhoC , fType):
 
 
 
-def plotForRadius(r0, fType):
-	
-	plt.cla()
-
-	def plotDensFunc():
-		for rhoC in rhoCArray:
-			plt.plot(r, densFunc(r, rhoC, r0), label='rhoC=%.1e' % rhoC)
-		
-		plt.xlabel('radius(m)')
-		plt.ylabel('density(kg/m3)')
-		
-		plt.title('Densidad = rhoC * exp(-r/r0) , r0 = %.1e' % r0)
 
 
-	def plotPotFunc():
-		for rhoC in rhoCArray:
-			plt.plot(r,  potFunc(r, rhoC, r0), label='rhoC=%.1e' % rhoC)
-		
-		plt.xlabel('radius(m)')
-		plt.ylabel('V(J/kg)')
-		plt.title('Pot for rho = rhoC * exp(-r/r0) , r0 = %.1e' % r0)
-
-	def plotVcFunc():
-		for rhoC in rhoCArray:
-			plt.plot(r, vcFunc(r, rhoC, r0), label='rhoC=%.1e' % rhoC)
-		#print("r0=%.1e,vc(r0)=%.1e" % (r0, vcFunc(np.array([r0]), rhoC, r0)[0]))
-		plt.xlabel('radius(m)')
-		plt.ylabel('vc(m/s)')
-		
-		plt.title('Vc for rho = rhoC * exp(-r/r0) , r0 = %.1e' % r0)
-
-	def plotDpFunc():
-		for rhoC in rhoCArray:
-			plt.plot(r, dpFunc(r, rhoC, r0), label='rhoC=%.1e' % rhoC)
-		
-		plt.xlabel('radius(m)')
-		plt.ylabel('Proj dens(kg/m2)')
-		
-		plt.title('Proj. dens. for rho = rhoC * exp(-r/r0) , r0 = %.1e' % r0)
-	
-	def plotMassFunc():
-		for rhoC in rhoCArray:
-			plt.plot(r, massFunc(r, rhoC, r0), label='rhoC=%.1e' % rhoC)
-		
-		plt.xlabel('radius(m)')
-		plt.ylabel('Mass(Kg)')
-		
-		plt.title('Mass for rho = rhoC * exp(-r/r0) , r0 = %.1e' % r0)
-	if(fType=="p"):
-		plotFunc = plotPotFunc
-	elif(fType=="v"):
-		plotFunc = plotVcFunc
-	elif(fType=="m"):
-		plotFunc = plotMassFunc
-	elif(fType=="d"):
-		plotFunc = plotDensFunc
-	elif(fType=="dp"):
-		plotFunc = plotDpFunc
-	else:
-		plotFunc = None
-		print("undefined function type %s", fType) 
-		import sys
-		sys.exit(0)
-
-	plotForAll(plotFunc)
-
-
-
-import datetime as dt
-
-#plotForRadius(r0Fixed, "dp")
-plotForRhoC(rhoCFixed, "p")
+plotForRhoC(rhoCFixed, r0Fixed,  "p")
 
 

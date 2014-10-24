@@ -171,26 +171,38 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 
 \clearpage
 
-\section{Solución semianalítica}
-\begin{itemize}
+\section*{Solución semianalítica}
+\begin{description}
 
-\item  $\rho(r) = Ae^{-Br} = \rho_c  e^{-\frac{r}{r_0}}, A,B > 0, \rho_c = A, r_0=\frac{1}{B}$  en un sistema con simetria esférica
+\item  $\rho(r) =  \rho_c  e^{-\frac{r}{r_0}} $  
 \item Integrando por partes 2 veces:
-\item $\int_0^r{x^2 e^{-Bx}dx} = - \frac{1}{B} \int_0^r{x^2 (e^{-Bx})\prime dx}
-=-\frac{1}{B}( (x^2 e^{-Bx})\Big|_0^r  - 2\int_0^r{x e^{-Bx}dx})  = -\frac{2}{B^2}\int_0^r{x (e^{-Bx})\prime dx} - \frac{1}{B}r^2 e^{-Br} = -\frac{2}{B^2}((x e^{-Bx})\Big|_0^r - \int_0^r{e^{-Bx}dx}) - \frac{1}{B}r^2 e^{-Br} = -\frac{2}{B^3}e^{-Bx}\Big|_0^r -\frac{2}{B^2}r e^{-Br} - \frac{1}{B}r^2 e^{-Br} = \frac{2}{B^3} -\frac{2}{B^3}e^{-Br} -\frac{2}{B^2}r e^{-Br} - \frac{1}{B}r^2 e^{-Br}  $
+\item $\int_0^r{x^2 e^{-\frac{x}{r_0}}dx} = - r_0 \int_0^r{x^2 (e^{-\frac{x}{r_0}})\prime dx}
+=-r_0( (x^2 e^{-\frac{x}{r_0}})\Big|_0^r  - 2\int_0^r{x e^{-\frac{x}{r_0}}dx})  = -2 r_0^2 \int_0^r{x (e^{-\frac{x}{r_0}})\prime dx} - r_0 r^2 e^{-\frac{r}{r_0}} = -2 r_0^2 ((x e^{-\frac{x}{r_0}})\Big|_0^r - \int_0^r{e^{-\frac{x}{r_0}}dx}) - r_0 r^2 e^{-\frac{r}{r_0}} = -2 r_0^3 e^{-\frac{x}{r_0}}\Big|_0^r -2 r_0^2 r e^{-\frac{r}{r_0}} - r_0 r^2 e^{-\frac{r}{r_0}} = 2 r_0^3 -2 r_0^3 e^{-\frac{r}{r_0}} -2 r_0^2 r e^{-\frac{r}{r_0}} - r_0 r^2 e^{-\frac{r}{r_0}}  $
 
-\item $\implies \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{y^2 e^{-By}dy})dx} = 
--\frac{1}{B}(-\frac{2}{B^2}\int_\varepsilon^r{\frac{1}{x^2}dx} +\frac{1}{B^2}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx}  + \frac{2}{B}\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} + \int_\varepsilon^r{e^{-Bx}dx} ) = 
-\frac{1}{B^2}(\frac{2}{B}(\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-Br} - \frac{1}{B}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} ) $
+\item $\implies \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{y^2 e^{-\frac{y}{r_0}}dy})dx} = 
+-r_0 (-2 r_0^2 \int_\varepsilon^r{\frac{1}{x^2}dx} + r_0^2 \int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx}  + 2 r_0 \int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} + \int_\varepsilon^r{e^{-\frac{x}{r_0}}dx} ) = 
+r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-\frac{r}{r_0}} - r_0 \int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} ) $
+\item Integrando por partes $\int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx} = -(\frac{e^{-\frac{x}{r_0}}}{x})\Big|_\varepsilon^r - \frac{1}{r_0} \int_\varepsilon^r{\frac{1}{x} e ^{-\frac{x}{r_0}}dx}  $
 
-\item $\implies \Phi(r) = \frac{4 \pi G A}{B^2}(\frac{2}{B}(\frac{1}{\varepsilon} - \frac{1}{r}) + e^{-Br} - \frac{1}{B}\int_\varepsilon^r{\frac{1}{x^2}e^{-Bx}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-Bx}dx} ) $
+\item $\implies \Phi(r) = 4 \pi G \rho_c r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r}) + e^{-\frac{r}{r_0}} + r_0 (\frac{e^{-\frac{r}{r_0}}}{r} - \frac{e^{-\frac{\varepsilon}{r_0}}}{\varepsilon} ) -\int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} ) $
 
 
-\item $M(r) = 4 \pi A \int_0^r{x^2 e^{-Bx}dx} = -\frac{4 \pi A}{B}( -\frac{2}{B^2} + \frac{2}{B^2}e^{-Br} +\frac{2}{B}r e^{-Br} + r^2 e^{-Br}) $
+\item $M(r) = 4 \pi \rho_c \int_0^r{x^2 e^{-\frac{x}{r_0}}dx} = 4 \pi \rho_c r_0 ( 2 r_0^2 - 2 r_0^2 e^{-\frac{r}{r_0}} - 2 r_0 r e^{-\frac{r}{r_0}} - r^2 e^{-\frac{r}{r_0}}) $
 
-\item $v_c(r) = (\frac{4 \pi G A}{r}\int_0^r{x^2 e^{-Bx}dx} )^{\frac{1}{2}}   
-= (-\frac{4 \pi G A}{B}(\frac{2}{B^2r}e^{-Br} +\frac{2}{B} e^{-Br} + r e^{-Br} -  \frac{2}{B^2r} ))^{\frac{1}{2}} $
-\end{itemize}
+\item $v_c(r) = (\frac{4 \pi G \rho_c}{r}\int_0^r{x^2 e^{-\frac{x}{r_0}}dx} )^{\frac{1}{2}}   
+= (-4 \pi G \rho_c r_0 (\frac{2 r_0^2}{r}e^{-\frac{r}{r_0}} + 2 r_0 e^{-\frac{r}{r_0}} + r e^{-\frac{r}{r_0}} -  \frac{2 r_0^2}{r} ))^{\frac{1}{2}} $
+\end{description}
+
+
+\subsection{Solución analítica - resultado de programas que  trabajan con símbolos matematicos}
+
+\begin{description}
+\item Usando sympy(python) y matematica - salen los mismos resultados
+\item  $\int{r^2 e^{-\frac{r}{r_0}}dr} =  -r^2 r0 e^{-\frac{r}{r0}} - 2 r r0^2 e^{-\frac{r}{r0}} - 2 r0^3  e^{-\frac{r}{r0}} $
+\item  $\int{\frac{1}{r^2} \int{r^2 e^{-\frac{r}{r_0}}dr}dr} =  r0^2 e^{-\frac{r}{r0}} + 2 r0^3 \frac{e^{-\frac{r}{r0}}}{r} $
+\end{description}
+
+
 
 
 \begin{itemize}
