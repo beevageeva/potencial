@@ -171,13 +171,18 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 
 \clearpage
 
-\section*{Solución semianalítica}
+\section*{Solución analítica}
 \begin{description}
 
 \item  $\rho(r) =  \rho_c  e^{-\frac{r}{r_0}} $  
 \item Integrando por partes 2 veces:
 \item $\int_0^r{x^2 e^{-\frac{x}{r_0}}dx} = - r_0 \int_0^r{x^2 (e^{-\frac{x}{r_0}})\prime dx}
-=-r_0( (x^2 e^{-\frac{x}{r_0}})\Big|_0^r  - 2\int_0^r{x e^{-\frac{x}{r_0}}dx})  = -2 r_0^2 \int_0^r{x (e^{-\frac{x}{r_0}})\prime dx} - r_0 r^2 e^{-\frac{r}{r_0}} = -2 r_0^2 ((x e^{-\frac{x}{r_0}})\Big|_0^r - \int_0^r{e^{-\frac{x}{r_0}}dx}) - r_0 r^2 e^{-\frac{r}{r_0}} = -2 r_0^3 e^{-\frac{x}{r_0}}\Big|_0^r -2 r_0^2 r e^{-\frac{r}{r_0}} - r_0 r^2 e^{-\frac{r}{r_0}} = 2 r_0^3 -2 r_0^3 e^{-\frac{r}{r_0}} -2 r_0^2 r e^{-\frac{r}{r_0}} - r_0 r^2 e^{-\frac{r}{r_0}}  $
+=-r_0( (x^2 e^{-\frac{x}{r_0}})\Big|_0^r  - 2\int_0^r{x e^{-\frac{x}{r_0}}dx})  = 
+-2 r_0^2 \int_0^r{x (e^{-\frac{x}{r_0}})\prime dx} - r_0 r^2 e^{-\frac{r}{r_0}} = -2 r_0^2 ((x e^{-\frac{x}{r_0}})\Big|_0^r - \int_0^r{e^{-\frac{x}{r_0}}dx}) - r_0 r^2 e^{-\frac{r}{r_0}} = 
+-2 r_0^3 e^{-\frac{x}{r_0}}\Big|_0^r -2 r_0^2 r e^{-\frac{r}{r_0}} - r_0 r^2 e^{-\frac{r}{r_0}} = 
+2 r_0^3 -2 r_0^3 e^{-\frac{r}{r_0}} -2 r_0^2 r e^{-\frac{r}{r_0}} - r_0 r^2 e^{-\frac{r}{r_0}}  
+= 2  r_0^3 -  r_0 e^{-\frac{r}{r_0}} (2 r_0^2  + 2 r_0 r + r^2)
+$
 
 \item $\implies \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{y^2 e^{-\frac{y}{r_0}}dy})dx} = 
 -r_0 (-2 r_0^2 \int_\varepsilon^r{\frac{1}{x^2}dx} + r_0^2 \int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx}  + 2 r_0 \int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} + \int_\varepsilon^r{e^{-\frac{x}{r_0}}dx} ) = 
@@ -186,21 +191,51 @@ r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-\frac{r}{r_0}} - r_0 \
 
 \item $\implies \Phi(r) = 4 \pi G \rho_c r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r}) + e^{-\frac{r}{r_0}} + r_0 (\frac{e^{-\frac{r}{r_0}}}{r} - \frac{e^{-\frac{\varepsilon}{r_0}}}{\varepsilon} ) -\int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} ) $
 
+\item Usando programas que trabajan con símbolos matematicos(Mathematica y sympy(python) producen los mismos resultados) se comprueba la primera integral (que se calculó de forma analitica por partes antes), pero reduce más la segunda integración:
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.5]{traceInt.png}
+ \caption{\emph{Trace in Mathematica}}
+\end{figure}
+
+
+\item  $\int_\varepsilon^r{\frac{1}{x^2} ( \int_0^x{a^2 e^{-\frac{a}{r_0}}da} ) dx} =  r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon}
++ \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} ) 
+\implies \Phi(r) = 4 \pi G \rho_c r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon}
++ \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} )$
 
 \item $M(r) = 4 \pi \rho_c \int_0^r{x^2 e^{-\frac{x}{r_0}}dx} = 4 \pi \rho_c r_0 ( 2 r_0^2 - 2 r_0^2 e^{-\frac{r}{r_0}} - 2 r_0 r e^{-\frac{r}{r_0}} - r^2 e^{-\frac{r}{r_0}}) $
 
 \item $v_c(r) = (\frac{4 \pi G \rho_c}{r}\int_0^r{x^2 e^{-\frac{x}{r_0}}dx} )^{\frac{1}{2}}   
-= (-4 \pi G \rho_c r_0 (\frac{2 r_0^2}{r}e^{-\frac{r}{r_0}} + 2 r_0 e^{-\frac{r}{r_0}} + r e^{-\frac{r}{r_0}} -  \frac{2 r_0^2}{r} ))^{\frac{1}{2}} $
+= (4 \pi G \rho_c r_0 (\frac{2 r_0^2}{r} -  e^{-\frac{r}{r_0}} (2 \frac{r_0^2}{r} +  2 r_0 + r) ))^{\frac{1}{2}} $
+
+
+\item Gráficos de las funciones calculadas de forma analítica(las fórmulas de arriba) (se observa que son parecidos a la solución completamente numérica de antes)
+
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.4]{potAn.png}
+ \caption{\emph{Potencial}}
+\end{figure}
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.4]{vcAn.png}
+ \caption{\emph{Velocidad circular}}
+\end{figure}
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.4]{massAn.png}
+ \caption{\emph{Masa}}
+\end{figure}
+
+
 \end{description}
 
 
-\subsection{Solución analítica - resultado de programas que  trabajan con símbolos matematicos}
-
-\begin{description}
-\item Usando sympy(python) y matematica - salen los mismos resultados
-\item  $\int{r^2 e^{-\frac{r}{r_0}}dr} =  -r^2 r0 e^{-\frac{r}{r0}} - 2 r r0^2 e^{-\frac{r}{r0}} - 2 r0^3  e^{-\frac{r}{r0}} $
-\item  $\int{\frac{1}{r^2} \int{r^2 e^{-\frac{r}{r_0}}dr}dr} =  r0^2 e^{-\frac{r}{r0}} + 2 r0^3 \frac{e^{-\frac{r}{r0}}}{r} $
-\end{description}
 
 
 

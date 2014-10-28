@@ -1,7 +1,7 @@
 import matplotlib
 from scipy import integrate
 from math import pi
-matplotlib.use('GTKAgg')
+matplotlib.use('TKAgg')
 matplotlib.rcParams['axes.titlesize'] = 'small'
 import matplotlib.pyplot as plt
 from math import sqrt, e
@@ -10,8 +10,8 @@ import numpy as np
 
 #numPoints = 10000
 numPoints = 1000
-Rmax = 10**11
-#Rmax = 5.0 * 10**11 #for mass
+#Rmax = 10**11
+Rmax = 5.0 * 10**11 #for mass
 #Rmax = 10**12    #for vc
 
 #not used, makes no difference!
@@ -50,7 +50,7 @@ def potFunc1(r, rhoC, r0):
 
 
 
-def potFunc(r, rhoC, r0):
+def potFunc2(r, rhoC, r0):
 	epsilon = 0.0001
 	eps = 1
 	res = np.zeros(r.shape)
@@ -67,15 +67,53 @@ def potFunc(r, rhoC, r0):
 	return res
 	
 
+
+
+
 def potFuncMath(r, rhoC, r0):
-	return (4 * pi * G * rhoC ) * np.exp(-r/r0) * r0 * (r0 + 2 * r0**2 / r)
+	#return (4 * pi * G * rhoC ) * np.exp(-r/r0) * r0 **2  * (1 + 2 * r0 / r)
+	#reverse sign
+	return (-4 * pi * G * rhoC ) * np.exp(-r/r0) * r0 **2  * (1 + 2 * r0 / r)
 
 
 
-def vcFunc(r, rhoC, r0):
+
+def potFuncMath2(r, rhoC, r0):
+	eps = 0.0001
+	r[r<eps] = eps
+	print("r")
+	print(r)
+	res =  4 * pi * G * rhoC * r0**2 * ((2 * r0)/eps - (e**(-(eps/r0)) * (eps + 2 * r0))/eps + (-2 * r0 + np.exp(-(r/r0))* (r + 2 * r0))/r)
+	last = res[res.shape[0] - 1]
+	return res - last
+
+
+potFunc = potFuncMath2
+
+def vcFuncMath(r, rhoC, r0):
+	#return np.sqrt((-4 * pi * G * rhoC ) * np.exp(-r/r0) * r0  * (r + 2* r0 + 2 * r0**2 / r))
+	#reverse sign
+	return np.sqrt((4 * pi * G * rhoC ) * np.exp(-r/r0) * r0  * (r + 2* r0 + 2 * r0**2 / r))
+
+
+def vcFuncMath2(r, rhoC, r0):
+	eps = 0.0001
+	return r*(-r0*exp(-r/r0) - 2*r0**2*exp(-r/r0)/r + 2*r0**3/r**2 - 2*r0**3*exp(-r/r0)/r**2) + r0**2*exp(-r/r0) - r0**2*exp(-eps/r0) - 2*r0**3/r + 2*r0**3*exp(-r/r0)/r + 2*r0**3/eps - 2*r0**3*exp(-eps/r0)/eps
+
+def vcFuncMath3(r, rhoC, r0):
+	return np.sqrt(4 * pi * G * rhoC * np.exp(-r/r0) * r0 * (-r**2 - 2*r*r0 + 2*r0**2 - 2*r0**2)/r	)
+
+
+def vcFuncMath4(r, rhoC, r0):
+   return np.sqrt(4.0 * pi * G  * rhoC *r0*	(2 *  r0**2 / r - np.exp(-(r/r0)) *  (2 * r0**2/r + 2 * r0  + r)))
+
+def vcFunc1(r, rhoC, r0):
 	t2 = e ** (-r/r0)	
 	t1 =  (-4.0 * pi * G  * rhoC *  r0 ) * (2 * r0 **2 * r **(-2) * t2 + 2 * r0  * r ** (-1) * t2 +  t2 - 2 * r0**2/r )	
 	return np.sqrt(t1)
+
+vcFunc = vcFuncMath4
+
 
 #	res = np.zeros(r.shape)
 #	i = 0
@@ -131,8 +169,7 @@ def plotForRhoC(rhoC , r0, fType):
 
 
 	def plotPotFunc():
-		#plt.plot(r, potFunc(r, rhoC, r0))
-		plt.plot(r, potFuncMath(r, rhoC, r0))
+		plt.plot(r, potFunc(r, rhoC, r0))
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('V(J/kg)')
@@ -182,6 +219,6 @@ def plotForRhoC(rhoC , r0, fType):
 
 
 
-plotForRhoC(rhoCFixed, r0Fixed,  "p")
+plotForRhoC(rhoCFixed, r0Fixed,  "v")
 
 
