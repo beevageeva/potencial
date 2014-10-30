@@ -13,12 +13,12 @@ DEFAULT_NUMBER_POINTS = 1000
 
 
 def usage():
-        print("Usage: %s [--rhodef=<filename>] [--type=p|v|m|mi] [--test=<filename>]\n Option --rhodef is the filename  from where the definition of rho is read(Default: rhodef).\n Option --type can have values : p(potential), v(velocity), m(mass), dp(integrated mass) and tells what to plot.\n Option --test if present tells to use this file (it must be a python file, the extension .py  in this option must be omitted) that MUST be in the same directory to plot the corresponding function calculated analytically\n Option --plotd plot the distribution function in another subplot" % sys.argv[0])
+        print("Usage: %s [--rhodef=<filename>] [--type=p|v|m|dp] [--test=<filename>] [--k=karray]\n Option --rhodef is the filename  from where the definition of rho is read(Default: rhodef).\n Option --type can have values : p(potential), v(velocity), m(mass), dp(integrated mass) and tells what to plot.\n Option --test if present tells to use this file (it must be a python file, the extension .py  in this option must be omitted) that MUST be in the same directory to plot the corresponding function calculated analytically\n Option --plotd plot the distribution function in another subplot. karray is initial array of k(integration constants) separated by coma to use, by default are 0" % sys.argv[0])
 
 
 
 try:
-				opts, args = getopt.getopt(sys.argv[1:], "", ["help",  "rhodef=", "type=", "test=", "plotd"])
+				opts, args = getopt.getopt(sys.argv[1:], "", ["help",  "rhodef=", "type=", "test=", "plotd", "k="])
 except getopt.GetoptError as err:
 				# print help information and exit:
 				print(str(err)) # will print something like "option -a not recognized"
@@ -28,6 +28,7 @@ ptype = "p"
 rhodefFilename = "rhodef"
 testFilename = None
 plotd = False
+kstring = None
 for o, a in opts:
 				if o in("--type"):
 								ptype = a
@@ -40,6 +41,8 @@ for o, a in opts:
 								sys.exit()
 				elif o in ("--rhodef"):
 								rhodefFilename = a
+				elif o in ("--k"):
+								kstring = a
 				else:
 								print("option %s not recognized " % o)
 print("rhodefFile=%s, testFilename=%s, plotType=%s, plotd=%s" % (rhodefFilename, testFilename, ptype, str(plotd)))				
@@ -56,27 +59,48 @@ testFunction = None
 
 maxX = 2
 
+def getKFromString(kstring, nk):
+	kres = [0] * nk
+	if kstring is None:
+		return kres
+	karray = kstring.split(",")
+	if(nk > len(karray)):
+		print("too few k values padding with 0")
+	i = 0
+	while i<nk and i<len(karray):
+		try:
+			kres[i] = float(karray[i])
+		except ValueError:
+			 print("k entered not number %s" % karray[i])
+		i+=1
+	return kres
+			
+
+
 
 if ptype == 'p':
 
 	label = "Potencial(J/kg)"
-	K = [0,0]	
+	K = getKFromString(kstring,2)
 
 	#r here is only 1 element of r array we want to plot
 	def calculateFunction(r, rho):	
-		if(r==0):
-			return 0
 		epsilon = 0.0004
+		if(r==0):
+			r = epsilon
 		def f(x):
 			int1 = integrate.quad(lambda y: y**2 * rho(y), 0, x )
 			return (1.0 / x**2) * int1[0]
 		return 4* pi * G * integrate.quad(f, epsilon, r)[0] + K[0]/r + K[1]
 	if testFilename:
-		testFunction = testplot.calculateP
+		if hasattr(testplot, 'calculateP'):
+			testFunction = testplot.calculateP
+		else:
+			print("no calculateP function in %s" % testFilename.name)
 
 elif ptype == 'v': 
 	label = "Vc(m/s)"
-	K = [0]	
+	K = getKFromString(kstring,1)
 
 	def calculateFunction(r, rho):
 		if(r==0):
@@ -89,7 +113,10 @@ elif ptype == 'v':
 			return 0
 		return sqrt( pr1 / r )
 	if testFilename:
-		testFunction = testplot.calculateV
+		if hasattr(testplot, 'calculateV'):
+			testFunction = testplot.calculateV
+		else:
+			print("no calculateV function in %s" % testFilename.name)
 
 elif ptype == 'dp': 
 	label = "dp(kg/m2)"
@@ -99,17 +126,23 @@ elif ptype == 'dp':
 		int1 = integrate.quad(lambda y: (y * rho(y))/sqrt(y**2-s**2), s, np.inf )	
 		return  2 *  int1[0] 
 	if testFilename:
-		testFunction = testplot.calculateDp
+		if hasattr(testplot, 'calculateDp'):
+			testFunction = testplot.calculateDp
+		else:
+			print("no calculateDp function in %s" % testFilename.name)
 
 elif ptype == 'm': 
 	label = "m(kg)"
-	K = [0]	
+	K = getKFromString(kstring,1)
 
 	def calculateFunction(r, rho):
 		int1 = integrate.quad(lambda y: y**2 * rho(y), 0, r )	
 		return  4.0 * pi *  int1[0] + K[0]
 	if testFilename:
-		testFunction = testplot.calculateM
+		if hasattr(testplot, 'calculateM'):
+			testFunction = testplot.calculateM
+		else:
+			print("no calculateM function in %s" % testFilename.name)
 
 else:
 	usage()

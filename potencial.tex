@@ -119,7 +119,7 @@ $D_p(s) = 2 \rho_c \lvert \int_0^\infty{e^{-\frac{\sqrt{s^2 + x^2}}{r_0}} dx}  \
 
 
 \begin{description}
-\item Los gráficos se realizaron con un programa python (en el repositorio git: \url{https://github.com/beevageeva/potencial} ) tomando las constantes de integración 0 y usando las expresiones iniciales(sin hacer la integración por partes). 
+\item Los gráficos se realizaron con un programa python (problem.py )(en el repositorio git: \url{https://github.com/beevageeva/potencial} ) tomando las constantes de integración 0 y usando las expresiones iniciales(sin hacer la integración por partes). 
 Las integraciones se calculan de forma numérica y observando los gráficos de las funciones que se integran estas son continuas y tienen el valor 0 en el punto 0 así que se pueden tomar los límites de integración 0 y r.
 Se muestran los gráficos  para $\rho_c$ en $ \{0.5 * 10^5, 10^5, 1.5 * 10^5, 2.0 * 10^5 \} $y $r_0$ en $\{0.5 * 10^9, 10^9, 1.5 * 10^9 ,2 * 10^9 \}$. 
 Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, velocidad m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
@@ -185,23 +185,11 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 $
 
 \item $\implies \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{y^2 e^{-\frac{y}{r_0}}dy})dx} = 
--r_0 (-2 r_0^2 \int_\varepsilon^r{\frac{1}{x^2}dx} + r_0^2 \int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx}  + 2 r_0 \int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} + \int_\varepsilon^r{e^{-\frac{x}{r_0}}dx} ) = 
-r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-\frac{r}{r_0}} - r_0 \int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx} - 2\int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} ) $
-\item Integrando por partes $\int_\varepsilon^r{\frac{1}{x^2}e^{-\frac{x}{r_0}}dx} = -(\frac{e^{-\frac{x}{r_0}}}{x})\Big|_\varepsilon^r - \frac{1}{r_0} \int_\varepsilon^r{\frac{1}{x} e ^{-\frac{x}{r_0}}dx}  $
-
-\item $\implies \Phi(r) = 4 \pi G \rho_c r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r}) + e^{-\frac{r}{r_0}} + r_0 (\frac{e^{-\frac{r}{r_0}}}{r} - \frac{e^{-\frac{\varepsilon}{r_0}}}{\varepsilon} ) -\int_\varepsilon^r{\frac{1}{x} e^{-\frac{x}{r_0}}dx} ) $
-
-\item Usando programas que trabajan con símbolos matematicos(Mathematica y sympy(python) producen los mismos resultados) se comprueba la primera integral (que se calculó de forma analitica por partes antes), pero reduce más la segunda integración:
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.5]{traceInt.png}
- \caption{\emph{Trace in Mathematica}}
-\end{figure}
-
-
-\item  $\int_\varepsilon^r{\frac{1}{x^2} ( \int_0^x{a^2 e^{-\frac{a}{r_0}}da} ) dx} =  r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon}
-+ \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} ) 
+2 r_0^3 \int_\varepsilon^r{\frac{1}{x^2}dx} - \int_\varepsilon^r{\frac{ e^{-\frac{x}{r_0}} (2 r_0^3 + 2 r_0^2 x +x^2 r_0)}{x^2}dx }=
+-2 r0^3 \frac{1}{x}\Big|_\varepsilon^r -  \int_\varepsilon^r{e^{-\frac{x}{r_0}} (- (-r_0 - \frac{2 r_0^2}{x}) + r_0 (-r_0 - \frac{2 r_0^2}{x})\prime) dx } = 
+2 r_0^3 (\frac{1}{\varepsilon} - \frac{1}{r}) + r_0 ((e^{-\frac{x}{r_0}})\prime (-r_0 - \frac{2 r_0^2}{x})  + e^{-\frac{x}{r_0}} (-r_0 - \frac{2 r_0^2}{x})\prime )= $(integración por partes)$
+=2 r_0^3 (\frac{1}{\varepsilon} - \frac{1}{r}) + r_0 (e^{-\frac{x}{r_0}} (-r_0 - \frac{2 r_0^2}{x})) \Big|_\varepsilon^r =
+ r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon} + \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} )
 \implies \Phi(r) = 4 \pi G \rho_c r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon}
 + \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} )$
 
@@ -211,7 +199,11 @@ r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-\frac{r}{r_0}} - r_0 \
 = (4 \pi G \rho_c r_0 (\frac{2 r_0^2}{r} -  e^{-\frac{r}{r_0}} (2 \frac{r_0^2}{r} +  2 r_0 + r) ))^{\frac{1}{2}} $
 
 
-\item Gráficos de las funciones calculadas de forma analítica(las fórmulas de arriba) (se observa que son parecidos a la solución completamente numérica de antes)
+\item Usando programas que trabajan con símbolos matematicos(Mathematica y sympy(python) producen los mismos resultados 
+
+
+
+\item Gráficos de las funciones calculadas de forma analítica(las fórmulas de arriba) (programa prAn.py) (se observa que son parecidos a la solución completamente numérica de antes)
 
 
 \begin{figure}[!ht]
@@ -238,37 +230,31 @@ r_0^2 (2 r_0 (\frac{1}{\varepsilon} - \frac{1}{r})  + e^{-\frac{r}{r_0}} - r_0 \
 
 
 
-
+\newpage
 
 \begin{itemize}
 
-	\item Hay otro programa python mas general que tiene como entrada la función de densidad (que puede tener parámetros que se pueden variar durante la ejecución a través de un slider) y calcula el potencial, velocidad circular, masa y distribución proyectada de masa según el caso general, pero tiene la posibilidad de representar el gráfico de las funciones calculadas de modo analítico (ver readme en la misma carpeta)
+	\item Hay otro programa python mas general  (pt.py)  que tiene como entrada la función de densidad (que puede tener parámetros que se pueden variar durante la ejecución a través de un slider: ver rhodef) y calcula el potencial, velocidad circular, masa y distribución proyectada de masa según el caso general, pero tiene la posibilidad de representar el gráfico de las funciones calculadas de modo analítico (ver readme en la misma carpeta)
 \item Para el potencial resolver la ecuación diferencial de segundo grado implica tener 2 constantes de integración, para la $V_c$ y masa hay solo una, variando la segunda constante en el caso del potencial y la única constante para la masa y velocidad y distribución proyectada solo hace una traslación a los gráficos de las funciones(sumando la constante), pero la forma queda igual así que solo tiene sentido tener en cuenta variar K1 en el caso del potencial 
 \item Hay un slider con cual se puede cambiar el rango del radius desde 10**1 hasta 10**30
-\item Se muestran los gráficos en el caso A = B = 1 ($\implies r_0= \rho_c =1$) y constantes de integración 0 para poder comprobarlos con los otros (donde hay 2 gráficos, el segundo está calculado con las fórmulas de la integración por partes: ver calc\_exp.py)
+\item Se muestran los gráficos en el caso A = B = 1 ($\implies r_0= \rho_c =1$) y constantes de integración 0 para poder comprobarlos con los otros (donde hay 2 gráficos, el segundo está calculado con la solución analítica: ver calc\_exp.py)
 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{pt_pot_A1_B1.png}
- \caption{\emph{Potencial}}
+ \caption{\emph{Potencial (ejecución: python pt.py --type=p --test=calc\_exp --k=0,-8e-10 )}}
 \end{figure}
 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{pt_vc_A1_B1.png}
- \caption{\emph{Velocidad circular}}
+ \caption{\emph{Velocidad circular( python pt.py --type=v --test=calc\_exp )}}
 \end{figure}
 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{pt_m_compAn.png}
- \caption{\emph{Masa}}
-\end{figure}
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.33]{pt_dp_compAn.png}
- \caption{\emph{Densidad proyectada}}
+ \caption{\emph{Masai ( python pt.py --type=m --test=calc\_exp )}}
 \end{figure}
 
 \end{itemize}

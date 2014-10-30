@@ -11,6 +11,6 @@ def calculateV(numvars, K , x):
 def calculateM(numvars, K , x):
 	return x * numvars["A"]
 
-def calculateMi(numvars, K , x):
+def calculateDp(numvars, K , x):
 	return numvars["A"] + numvars["B"]
 

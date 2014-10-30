@@ -12,18 +12,23 @@ Opciones:
 Esta opción es para elegir la función que se representa: p es para el potencial, v para la velocidad, m para la masa y dp para la proyeccion de la distribución. Por defecto type=p
 --rhodef=<filename>
 Ejemplo:
-python pt.py --rhodef=rhodef1
-	coge la definición del fichero rhodef1	
+python pt.py --rhodef=rhodef2
+	coge la definición del fichero rhodef2
+Por defecto el fichero para rhodef se llama rhodef
 
 --test=<filename> 
  Representa también el gráfico de la misma función calculada de otra forma(analítica) definida en el fichero
-<filename>.py. En el fichero hay que definir las funciones para cada tipo:  calculateP(numvars,K,r), calculateM(numvars,K,r), calculateV(numvars,K,r), calculateDp(numvars,K,r) donde numvars es un hash con los parametros variables de la función de densidad, K un array con las constantes de la integración, r el radio.  Ver los ficheros calc_exp.py y calc_exp_onevar.py
+<filename>.py. En el fichero hay que definir las funciones para cada tipo:  calculateP(numvars,K,r), calculateM(numvars,K,r), calculateV(numvars,K,r), calculateDp(numvars,K,r) donde numvars es un hash con los parametros variables de la función de densidad, K un array con las constantes de la integración, r el radio.  Ver los ficheros calc_exp.py 
 
 --plotd 
 Con esta opción se representa también el gráfico de la densidad
 
+--k=kstring  
+Se usa para especificar los valores iniciales de las constantes(de integración) K. kstring es un array de números separados por coma(2 en el caso del potencial) Por defecto son 0
+
+
 Ejemplo:
-	python pt.py --type=m --test=calc_exp_onevar --plotd
+	python pt.py --type=m --test=calc_exp --plotd
 
 
 Hay 2 sliders más para el gráfico del potencial y 1 para la masa y velocidad para poder variar las constantes de integración
