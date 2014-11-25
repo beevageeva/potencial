@@ -13,12 +13,12 @@ DEFAULT_NUMBER_POINTS = 1000
 
 
 def usage():
-        print("Usage: %s [--rhodef=<filename>] [--type=p|v|m|dp] [--test=<filename>] [--k=karray]\n Option --rhodef is the filename  from where the definition of rho is read(Default: rhodef).\n Option --type can have values : p(potential), v(velocity), m(mass), dp(integrated mass) and tells what to plot.\n Option --test if present tells to use this file (it must be a python file, the extension .py  in this option must be omitted) that MUST be in the same directory to plot the corresponding function calculated analytically\n Option --plotd plot the distribution function in another subplot. karray is initial array of k(integration constants) separated by coma to use, by default are 0" % sys.argv[0])
+        print("Usage: %s [--rhodef=<filename>] [--type=p|v|m|dp] [--test=<filename>] [--k=karray] [--plotd] [--epsilon]\n Option --rhodef is the filename  from where the definition of rho is read(Default: rhodef).\n Option --type can have values : p(potential), v(velocity), m(mass), dp(integrated mass) and tells what to plot.\n Option --test if present tells to use this file (it must be a python file, the extension .py  in this option must be omitted) that MUST be in the same directory to plot the corresponding function calculated analytically\n Option --plotd plot the distribution function in another subplot. karray is initial array of k(integration constants) separated by coma to use, by default are 0" % sys.argv[0])
 
 
 
 try:
-				opts, args = getopt.getopt(sys.argv[1:], "", ["help",  "rhodef=", "type=", "test=", "plotd", "k="])
+				opts, args = getopt.getopt(sys.argv[1:], "", ["help",  "rhodef=", "type=", "test=", "plotd", "k=", "epsilon"])
 except getopt.GetoptError as err:
 				# print help information and exit:
 				print(str(err)) # will print something like "option -a not recognized"
@@ -28,12 +28,15 @@ ptype = "p"
 rhodefFilename = "rhodef"
 testFilename = None
 plotd = False
+useEpsilon = False
 kstring = None
 for o, a in opts:
 				if o in("--type"):
 								ptype = a
 				if o in("--plotd"):
 								plotd = True
+				if o in("--epsilon"):
+								useEpsilon = True
 				elif o in("--test"):
 								testFilename = a
 				elif o in ("--help"):
@@ -122,9 +125,10 @@ elif ptype == 'dp':
 	label = "dp(kg/m2)"
 	K = []	
 
-	def calculateFunction(s, rho):
-		int1 = integrate.quad(lambda y: (y * rho(y))/sqrt(y**2-s**2), s, np.inf )	
-		return  2 *  int1[0] 
+	def calculateFunction(r, rho):
+		#int1 = integrate.quad(lambda y: (y * rho(y))/sqrt(y**2-s**2), s, np.inf )	
+		int1 = integrate.quad(lambda y: rho(sqrt(y**2 + r**2)), 0, np.inf)	
+		return  2 *  abs(int1[0]) 
 	if testFilename:
 		if hasattr(testplot, 'calculateDp'):
 			testFunction = testplot.calculateDp
@@ -136,7 +140,10 @@ elif ptype == 'm':
 	K = getKFromString(kstring,1)
 
 	def calculateFunction(r, rho):
-		int1 = integrate.quad(lambda y: y**2 * rho(y), 0, r )	
+		epsilon = 0.0004
+		if useEpsilon and r==0:
+			r = epsilon
+		int1 = integrate.quad(lambda y: y**2 * rho(y), epsilon if useEpsilon else 0, r )	
 		return  4.0 * pi *  int1[0] + K[0]
 	if testFilename:
 		if hasattr(testplot, 'calculateM'):

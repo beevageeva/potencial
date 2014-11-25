@@ -23,6 +23,9 @@ Por defecto el fichero para rhodef se llama rhodef
 --plotd 
 Con esta opción se representa también el gráfico de la densidad
 
+--epsilon
+Con esta opción se integra desde un punto epsilon (0.0004) y no 0 la masa si la densidad no está definida en 0
+
 --k=kstring  
 Se usa para especificar los valores iniciales de las constantes(de integración) K. kstring es un array de números separados por coma(2 en el caso del potencial) Por defecto son 0
 
