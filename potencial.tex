@@ -112,7 +112,7 @@ $F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro d
 \item $M(r) = 4 \pi \int_0^r{x^2 \rho(x)dx}$ (la constante de integración es 0 porque $M(0) = 0$) 
 \end{description}
 
-\section*{Problema de la práctica}
+\section*{Problema de la práctica. Solución numérica}
 \begin{description}
 \item Hipótesis: $\rho(r) = \rho_c e^{-\frac{r}{r_0}} $
 \item Determinar $\Phi(r)$, M(r),$M_p(r)$, $v_c(r)$ 
@@ -121,7 +121,7 @@ $F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro d
 
 
 \begin{description}
-\item Miramos los gráficos de las funciones y vemos que cumplen las condiciones para poner los límites de integración explicadas arriba
+\item Miramos los gráficos de las funciones(plotFunctions.py) y vemos que cumplen las condiciones para poner los límites de integración explicadas arriba
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{func12Plot.png}
@@ -138,59 +138,9 @@ $D_p(s) = 2 \rho_c \lvert \int_0^\infty{e^{-\frac{\sqrt{s^2 + x^2}}{r_0}} dx}  \
 
 \end{description}
 
-\section*{Solución numérica}
-
-\begin{description}
-\item Los gráficos se realizaron con un programa python (problem.py) definiendo la funcion densidad y calculando de forma numérica los integrales de las fórmulas de arriba(problem.py ) 
-\item Se muestran los gráficos  para $\rho_c$ en $ \{0.5 * 10^5, 10^5, 1.5 * 10^5, 2.0 * 10^5 \}  $ kg/m3 y $r_0$ en $\{0.5 * 10^9, 10^9, 1.5 * 10^9 ,2 * 10^9 \} $ m. 
-Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, velocidad m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
 
 
 
-\item
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.33]{densFinal.png}
- \caption{\emph{Densidad}}
-\end{figure}
-
-\item
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.33]{potFinal.png}
- \caption{\emph{Potencial}}
-\end{figure}
-
-\item
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.33]{vcFinal.png}
- \caption{\emph{Velocidad circular}}
-\end{figure}
-
-\item
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.33]{massFinal.png}
- \caption{\emph{Masa}}
-\end{figure}
-
-\item
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[scale=0.33]{dpFinal.png}
- \caption{\emph{Densidad proyectada}}
-\end{figure}
-
-\end{description}
-
-
-\clearpage
 
 \section*{Solución analítica}
 \begin{description}
@@ -220,22 +170,66 @@ $
 = (4 \pi G \rho_c r_0 (\frac{2 r_0^2}{r} -  e^{-\frac{r}{r_0}} (2 \frac{r_0^2}{r} +  2 r_0 + r) ))^{\frac{1}{2}} $
 
 
-\item Usando programas que trabajan con símbolos matematicos(Mathematica y sympy(python) producen los mismos resultados 
-
-
-
-\item Gráficos de las funciones calculadas de forma analítica(las fórmulas de arriba) (programa prAn.py - se pueden especificar como parámetros r0, rhoC, rmax(radio maximo para cual pinte el gráfico), type(d, dp, p, v, m) ) 
-y se observa que son parecidos a la solución completamente numérica de antes
+\item Usando programas que trabajan con símbolos matematicos(Mathematica y sympy(python) -  ver sympyDens.py) producen los mismos resultados 
+\item Comparación entre las soluciones del potencial, masa y velocidad obtenidas de forma numérica y analítica (exp\_plot.py):
+(son iguales)
 
 \begin{figure}[!ht]
  \centering
- \includegraphics[scale=0.42]{allAn1.png}
- \caption{\emph{rhoC = 10**5, r0=10**10m}}
+ \includegraphics[scale=0.7]{allNumAn.png}
+ \caption{\emph{izquierda: soluciones calculadas de forma numérica, derecha: analítica}}
 \end{figure}
 
 \end{description}
 
+\clearpage
 
+\section*{Variación de los parámetros ($r_0$ y $\rho_c$)}
+
+\begin{description}
+\item Los gráficos se realizaron con un programa python (exp\_compare.py) 
+\item Se muestran los gráficos  para $\rho_c$ en $ \{0.5 * 10^5, 10^5, 1.5 * 10^5, 2.0 * 10^5 \}  $ kg/m3 y $r_0$ en $\{0.5 , 1, 1.5  ,2 \} $ kpc. 
+Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, velocidad m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
+
+\end{description}
+
+
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.33]{densFinal.png}
+ \caption{\emph{Densidad}}
+\end{figure}
+
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.33]{potFinal.png}
+ \caption{\emph{Potencial}}
+\end{figure}
+
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.33]{vcFinal.png}
+ \caption{\emph{Velocidad circular}}
+\end{figure}
+
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.33]{massFinal.png}
+ \caption{\emph{Masa}}
+\end{figure}
+
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[scale=0.33]{dpFinal.png}
+ \caption{\emph{Densidad proyectada}}
+\end{figure}
+
+\clearpage
 
 \section*{Comparación con el potencial isócrono}
 
@@ -243,17 +237,15 @@ y se observa que son parecidos a la solución completamente numérica de antes
 \subsection*{Solución analítica del potencial isocrono}
 
 \begin{description}
-\item Hay 2 parámetros configurables : b  y M (la masa total del sistema) (ver Galactic Dynamics - Binney) 
+\item Hay 2 parámetros configurables: b(b = 0 es equivalente a una masa puntual: toda la masa en el centro )  y M (la masa total del sistema) 
+ 
 \item $ \Phi(r) =  -\frac{G  M}  {b + \sqrt{b^2 + r^2}}  $
+\item usando sympy para hacer los cálculos (sympyPot.py) (las fórmulas salen como en el libro)
 \item  Se define  $a = \sqrt{b^2 + r^2}$
 \item $ \rho(r) =  M  ( \frac{3(b+a)a^2 - r^2(b+3a) }{4 \pi (b+a)^3  a^3 })$		
-\item La densidad proyectada se calcula como antes reemplazando la funcion de densidad
 \item $ M(r) = M\frac{r^3}{(b + \sqrt{b^2 + r^2})^2 \sqrt{b^2 + r^2}} $ 
-obtenido  de la fórmula 
-$M(r) = \frac{r^2}{G}\frac{\partial \Phi}{\partial r}(r)$
-utilizando sympy
-
 \item $ v_c(r) =  \sqrt{(G  M  r ^ 2)/((b + a)^2 * a)} $ 
+\item La densidad proyectada se calcula como antes reemplazando la funcion de densidad
 \end{description}
 
 
@@ -262,20 +254,19 @@ utilizando sympy
 \begin{description}
 \item Elegimos $r_0$ (el parametro de escala de la distribucion exponencial)= 2kpc y $\rho_c$ = 1e+5 y ejecutamos el programa para dibujar la masa para la distribución exponencial. 
 \item La masa total obtenida y misma densidad central introducidas antes se introducen como parámetros para dibujar los gráficos en el caso del potencial isócrono para poder hacer una comparación (el parámetro b se calcula : $b = (\frac{3 M}{16 \pi \rho_c})^{\frac{1}{3}}$ -  reemplazando r=0 en la fórmula de la densidad)
+\end{description}
 
 \begin{verbatim}
- python prAn.py   --type=m  --rmax=0.5e+21  --r0=6.16e+19 --rhoC=1e+5
- python prAn_isochrone.py --rhoC=1.0e5 --type=v --mass=5.9e+65 --rmax=0.8e+22
+ python exp_plot.py   --type=m  --rmax=0.5e+21  --r0=6.16e+19 --rhoC=1e+5
+ python isochrone_plot.py --rhoC=1.0e5 --type=v --mass=5.9e+65 --rmax=0.8e+22
 \end{verbatim}
 
-\item 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.3]{potAnComp.png}
  \caption{\emph{Potencial comparado}}
 \end{figure}
 
-\item 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.3]{massAnComp.png}
@@ -283,30 +274,26 @@ utilizando sympy
 \end{figure}
 
 
-\item 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.3]{vcAnComp.png}
  \caption{\emph{Velocidad comparada}}
 \end{figure}
 
-
-\item 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.3]{densAnComp.png}
  \caption{\emph{Densidad comparada}}
 \end{figure}
 
-\item 
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.3]{dpAnComp.png}
  \caption{\emph{Densidad proyectada comparado}}
 \end{figure}
 
-\end{description}
 
+\clearpage
 
 \section*{Conclusiones}
 \begin{description}
@@ -315,18 +302,19 @@ utilizando sympy
 \end{description}
 
 
-\newpage
+\clearpage
 
 \section*{Código}
 
 \begin{itemize}
 
-	\item Los programas python , imagenes , pdf e incluso el tex están en el repositorio git: \url{https://github.com/beevageeva/potencial} 
+\item Los programas python, imagenes, pdf e incluso el tex están en el repositorio git: 
+	\url{https://github.com/beevageeva/potencial} 
+Allí está la descripción y ejemplos de uso.
+
 	 
-	\item Por razones históricas hay otro programa python mas general  (pt.py)  que tiene como entrada la función de densidad (que puede tener parámetros que se pueden variar durante la ejecución a través de un slider: ver rhodef) y calcula el potencial, velocidad circular, masa y distribución proyectada de masa según el caso general, pero tiene la posibilidad de representar el gráfico de las funciones calculadas de modo analítico (ver readme en la misma carpeta)
-\item Para el potencial resolver la ecuación diferencial de segundo grado implica tener 2 constantes de integración, para la $V_c$ y masa hay solo una, variando la segunda constante en el caso del potencial y la única constante para la masa y velocidad y distribución proyectada solo hace una traslación a los gráficos de las funciones(sumando la constante), pero la forma queda igual así que solo tiene sentido tener en cuenta variar K1 en el caso del potencial 
-\item Hay un slider con cual se puede cambiar el rango del radius desde 10**1 hasta 10**30
-\item Se muestran los gráficos en el caso A = B = 1 ($\implies r_0= \rho_c =1$) y constantes de integración 0 para poder comprobarlos con los otros (donde hay 2 gráficos, el segundo está calculado con la solución analítica: ver calc\_exp.py)
+\item Por razones históricas hay otro programa python mas general  (pt.py)  
+\item Se muestran los gráficos en el caso A = B = 1 ($\implies r_0= \rho_c =1$) y constantes de integración 0, el segundo gráfico está calculado con la solución analítica: ver calc\_exp.py)
 
 \begin{verbatim}
 python pt.py --type=p --test=calc_exp --k=0,-8e-10 
