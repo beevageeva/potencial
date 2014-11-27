@@ -24,7 +24,6 @@
 \begin{document}
 \section*{Nociones teóricas}
 
-Para una distribución de masa $\rho \colon \mathbb{R}^3 \to \mathbb{R}$
 
 \begin{footnotesize}
 Notaciones: 
@@ -44,6 +43,7 @@ $
 
 
 \begin{description}
+\item Para una distribución de densidad de masa $\rho \colon \mathbb{R}^3 \to \mathbb{R}$
 \item De la ley de Newton la fuerza gravitatoria ejercitada en una masa m = 1 situada en el punto x es:  $\vec{F}(\vec{x}) = G \int{\frac{\vec{x\prime} - \vec{x}}{|\vec{x\prime} - \vec{x}|^3}\rho(\vec{x\prime})d^3\vec{x\prime}} $ 
 y despues de hacer cálculos llegamos a $ \nabla  \cdot  \vec{F}(\vec{x}) = -4\pi G \rho(\vec{x}) $
 \item Definimos el potencial gravitatorio $\Phi(\vec{x}) = -G \int{\frac{\rho(\vec{x\prime})}{|\vec{x\prime} - \vec{x}|}d^3\vec{x}} $. 
@@ -55,6 +55,7 @@ y después de reemplazar en la ecuación de antes se obtiene la ecuación de Poi
 Las derivadas totales coinciden con las derivadas parciales $\frac {d\Phi(r)}{dr} = \frac{\partial \Phi(r)}{\partial r} $; 
 $|\vec{F}(r)| = |\nabla \Phi(r)| = \frac{\partial \Phi(r)}{\partial r} $ y 
 $\nabla^2 \Phi(r) = \frac{1}{r^2} \frac{\partial }{\partial r}(r^2 \frac{\partial \phi(r)}{\partial r})$
+\item
 La ecuacion Poisson:$ \frac{1}{r^2} \frac{\partial }{\partial r}(r^2 \frac{\partial \phi(r)}{\partial r}) = 4\pi G \rho(r) \implies
 r^2 \frac{\partial \phi(r)}{\partial r} = 4\pi G \int{r^2\rho(r)dr} + K_1 \implies
 \frac{\partial \Phi(r)}{\partial r} = \frac{4 \pi G}{r^2}\int{r^2\rho(r)dr} + \frac{K_1}{r^2}\implies
@@ -62,7 +63,7 @@ r^2 \frac{\partial \phi(r)}{\partial r} = 4\pi G \int{r^2\rho(r)dr} + K_1 \impli
 =4\pi G \int{\frac{1}{r^2}(\int{r^2\rho(r)dr})dr } + \frac{K_1}{r} + K_2, K_1, K_2 \in \mathbb{R} (el signo - con K_1)
  $
 \item El módulo de la fuerza ejercitada sobre la particula debido al movimiento en una órbita circular es $ |\vec{F}(r)| = m \frac{v_c^2}{r} $ y tiene que ser igual al  módulo la fuerza gravitatoria $\frac{\partial \Phi(r)}{\partial r}$
-donde $v_c$ es la velocidad circular y m se consideró = 1
+donde $v_c$ es el módulo de la velocidad circular y m se consideró = 1
 $ \implies v_c^2(r) = r\frac{\partial \Phi(r)}{\partial r} \implies
 v_c^2(r) = \frac{4\pi G}{r}\int{r^2\rho(r)dr} + \frac{K}{r}, K \in \mathbb{R} \implies 
 v_c(r) = (\frac{4 \pi G}{r}\int{r^2\rho(r)dr} + \frac{K}{r})^{\frac{1}{2}}, K \in \mathbb{R}
@@ -121,7 +122,7 @@ $F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro d
 
 
 \begin{description}
-\item Miramos los gráficos de las funciones(plotFunctions.py) y vemos que cumplen las condiciones para poner los límites de integración explicadas arriba
+\item Miramos los gráficos de las funciones(plotFunctions.py) a integrar que son continuas en $(0,\infty)$ y tienen limite 0 en r=0 para poner los límites y constantes de integración como arriba(ver exp\_num.py)
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{func12Plot.png}
@@ -135,7 +136,6 @@ $F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro d
 $D_p(s) = 2 \rho_c \lvert \int_0^\infty{e^{-\frac{\sqrt{s^2 + x^2}}{r_0}} dx}  \rvert$
 
 
-
 \end{description}
 
 
@@ -144,6 +144,7 @@ $D_p(s) = 2 \rho_c \lvert \int_0^\infty{e^{-\frac{\sqrt{s^2 + x^2}}{r_0}} dx}  \
 
 \section*{Solución analítica}
 \begin{description}
+\item Las integrales se pueden calcular de forma analítica, así que las funciones del potencial, masa y vc se pueden expresar sin usar integrales (ver exp\_an.py).
 
 \item  $\rho(r) =  \rho_c  e^{-\frac{r}{r_0}} $  
 \item Integrando por partes 2 veces:
@@ -171,7 +172,10 @@ $
 
 
 \item Usando programas que trabajan con símbolos matematicos(Mathematica y sympy(python) -  ver sympyDens.py) producen los mismos resultados 
-\item Comparación entre las soluciones del potencial, masa y velocidad obtenidas de forma numérica y analítica (exp\_plot.py):
+\item resolvemos las ecuaciones M(Rmax) = M y vc(Rsun) = vSun reemplazando Rmax = 4.62e20, M = 2e42, Rsun = 2.5e20 y vSun = 2.2e5 para obtener unos valores de r0 y rhoC parecidos a unos sistemas reales. 
+sympySolve.py obtiene las fórmulas analíticas de r0 y rhoC(allí se aproximo la exponencial con un polinomio de grado 3) y despues de reemplazar con los valores de arriba y hacer unos ajustes unos valores que cuadran son $r_0 = 1.53e20$(casi 5kpc) y $\rho_c = 9e-21$
+
+\item Comparación entre las soluciones del potencial, masa y vc  obtenidas de forma numérica y analítica (si se usa el flag --numerical al ejecutar exp\_plot.py va  acoger las definiciones de las funciones potencial, masa y vc de exp\_num.py y no de exp\_an.py donde están las definiciones de las funciones expresadaas de forma analítica):
 (son iguales)
 
 \begin{figure}[!ht]
@@ -189,7 +193,7 @@ $
 \begin{description}
 \item Los gráficos se realizaron con un programa python (exp\_compare.py) 
 \item Se muestran los gráficos  para $\rho_c$ en $ \{0.5 * 10^5, 10^5, 1.5 * 10^5, 2.0 * 10^5 \}  $ kg/m3 y $r_0$ en $\{0.5 , 1, 1.5  ,2 \} $ kpc. 
-Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, velocidad m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
+Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, vc m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
 
 \end{description}
 
@@ -297,8 +301,10 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 
 \section*{Conclusiones}
 \begin{description}
-\item Para las 2 distribuciones cuando la densidad es casi 0 la masa encerrada en el radius correspondiente es casi toda la masa (despues de este radius la masa es casi constante), el potencial se acerca a 0 y la velocidad circular tiene el máximo
-\item el parámetro de escala $r_0$ y $\rho_c$
+\item Para las 2 distribuciones cuando la densidad es casi 0 la masa encerrada en el radius correspondiente es casi toda la masa (despues de este radius la masa es casi constante), el potencial se acerca a 0 y vc tiene el máximo
+\item Variando el parámetro de escala $r_0$ (el radio en cual el logaritmo natural de la densidad decrece con una unidad comparado al logaritmo de la densidad central): si es mayor la densidad decrece mas lento (con respecto a la distancia del centro), la masa total  a va ser mayor igual que el máximo de la vc (pero van a crecer mas lento) y el potencial en el centro que va a decrecer mas despacio (igual que la densidad).Si la densidad decrece la densidad proyectada decrece más rápido visto que en el centro hay mas puntos para sumar la densidad (para integrar a lo largo de la linea de vision)
+\item Cuanto mayor es la densidad central, mayor será la masa, la vc  y el potencial en el centro
+\item En el caso del potencial isocrono la densidad tiene una porción muy pequeña en el centro casi constante, pero despues decrece mas rapido que en el caso de la distribucion exponencial, lo que hace que la masa crece mucho mas despacio y el potencial en el centro va a ser menor, igual que la vc máxima.
 \end{description}
 
 

@@ -20,7 +20,11 @@ def potFunc(r, rhoC, r0):
 
 
 def vcFunc(r, rhoC, r0):
-   return np.sqrt(4.0 * pi * G  * rhoC *r0*	(2 *  r0**2 / r - np.exp(-(r/r0)) *  (2 * r0**2/r + 2 * r0  + r)))
+	res = np.sqrt(4.0 * pi * G  * rhoC *r0*	(2 *  r0**2 / r - np.exp(-(r/r0)) *  (2 * r0**2/r + 2 * r0  + r)))
+	sunDistance = 2.5e20
+	indexR = np.argmin(np.abs(sunDistance - r))	
+	print("vc at sunDistance = %.2e" % res[indexR])
+	return res
 
 			 
 

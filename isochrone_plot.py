@@ -40,8 +40,9 @@ def plotForAll(plotFunction):
 	plotFunction()
 	plt.grid(True)
 	plt.draw()
-
+	#YLIM
 	#plt.ylim(0,100000)
+	#plt.ylim(0,9e-21)
 	
 	#plt.savefig("densNPRM10-%d.png" % int(r0))
 	plt.show(block=True)

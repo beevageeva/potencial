@@ -135,6 +135,7 @@ else:
 	#to use analytical functions
 	print("using analytical solutions for mass, velocity and potential")	
 	from exp_an import vcFunc, potFunc, massFunc
+	#from exp_an_prim import vcFunc, potFunc, massFunc
 
 
 r = np.linspace(0,Rmax,numPoints)

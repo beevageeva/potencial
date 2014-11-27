@@ -1,0 +1,4 @@
+montage  vcNum.png vcAn3.png -geometry 800x600+0+0 -tile 2x1 vcNumAn.png
+montage  dp-r0_const.png dp-rhoC_const.png -geometry 800x600+0+0 -tile 2x1 dpFinal.png
+montage potAn3.png potAnIso.png -geometry 800x600+0+0 -tile 2x1 potAnComp.png
+montage potNumAn.png massNumAn.png vcNumAn.png  -geometry 800x200+0+0 -tile 1x3  allNumAn.png
