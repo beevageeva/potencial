@@ -20,11 +20,7 @@ def potFunc(r, rhoC, r0):
 
 
 def vcFunc(r, rhoC, r0):
-	res = np.sqrt(4.0 * pi * G  * rhoC *r0*	(2 *  r0**2 / r - np.exp(-(r/r0)) *  (2 * r0**2/r + 2 * r0  + r)))
-	sunDistance = 2.5e20
-	indexR = np.argmin(np.abs(sunDistance - r))	
-	print("vc at sunDistance = %.2e" % res[indexR])
-	return res
+	return np.sqrt(4.0 * pi * G  * rhoC *r0*	(2 *  r0**2 / r - np.exp(-(r/r0)) *  (2 * r0**2/r + 2 * r0  + r)))
 
 			 
 
@@ -33,10 +29,7 @@ def vcFunc(r, rhoC, r0):
 
 def massFunc(r, rhoC, r0):
 	t1 = e ** (-r/r0)
-	res=  4 * pi * rhoC * r0 * (2* r0**2 - 2 * r0 **2 * t1 - 2.0 *r0 * r * t1 - r ** 2 * t1 ) 
-	last = res[res.shape[0] - 1]
-	print "Total mass is %.1e" % last
-	return res
+	return   4 * pi * rhoC * r0 * (2* r0**2 - 2 * r0 **2 * t1 - 2.0 *r0 * r * t1 - r ** 2 * t1 ) 
 	#element by element
 #	res = np.zeros(r.shape)
 #	i = 0

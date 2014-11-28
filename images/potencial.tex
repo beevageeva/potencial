@@ -102,13 +102,13 @@ $F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro d
 \end{tikzpicture}
 
 \item Para calcular estas funciones de forma numérica hay que establecer los límites de integración y las constantes
-\item Miramos el gráfico de la función:$ f(r) = r^2 \rho(r)$
-\item si  f es  continua y f(0) = 0
-\item  $\int{r^2 \rho(r) dr} = \int_0^r{x^2 \rho(x) dx}$
-\item Miramos el gráfico de la función $f(r) = \frac{1}{r^2}  \int_0^r{\frac{1}{x^2}\rho_c  e^{-\frac{x}{r0}}dx }$
-\item si f no está definida en 0 pero es continua en (0,$\infty$) y $  \lim_{x \underset{>}{\to} 0} f(x) = 0$
+\item Miramos los gráficos de las funciones que se integran:
+
+\item $ f(r) = r^2 \rho(r)$
+\item $g(r) = \frac{1}{r^2}  \int_0^r{\frac{1}{x^2} \rho(x) dx }$
+\item si  f es  continua y f(0) = 0 y g no está definida en 0 pero es continua en (0,$\infty$) y $  \lim_{x \underset{>}{\to} 0} g(x) = 0$
 \item $\Phi(r) = 4 \pi G  \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{a^2 \rho(a)da})dx} + K_2$
-(elegimos $K_1 = 0$ y $K_2$  de tal manera que $\lim_{x \to +\infty}\Phi(x) = 0 $, en práctica $K_2 = -\Phi(R_{max})$) 
+(elegimos $K_1 = 0$ y $K_2$  de tal manera que $\lim_{x \to +\infty}\Phi(x) = 0 $, en práctica $K_2 = -\Phi(R_{max})$  y $\varepsilon \approx 0$ ) 
 \item $v_c(r) = (\frac{4 \pi G }{r}\int_0^r{x^2 \rho(x)dx} )^{\frac{1}{2}}  $ (la constante de integración es 0 porque $v_c(0) = 0$)
 \item $M(r) = 4 \pi \int_0^r{x^2 \rho(x)dx}$ (la constante de integración es 0 porque $M(0) = 0$) 
 \end{description}
@@ -122,11 +122,11 @@ $F(s) = \int_{-\infty}^\infty{f(r)dx}$ donde s es la distancia desde el centro d
 
 
 \begin{description}
-\item Miramos los gráficos de las funciones(plotFunctions.py) a integrar que son continuas en $(0,\infty)$ y tienen limite 0 en r=0 para poner los límites y constantes de integración como arriba(ver exp\_num.py)
+\item Miramos los gráficos de las funciones f y g de arriba (plotFunctions.py) para poner los límites y constantes de integración en las funciones con las integrales calculadas de forma numérica(ver exp\_num.py)
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.33]{func12Plot.png}
- \caption{\emph{Graficos de las funciones}}
+ \caption{\emph{Graficos de las funciones f y g}}
 \end{figure}
 
 \item $\Phi(r) = 4 \pi G \rho_c \int_\varepsilon^r{ \frac{1}{x^2}(\int_0^x{a^2 e^{-\frac{a}{r_0}}da})dx} -\Phi(R_{max})$
@@ -163,7 +163,7 @@ $
 =2 r_0^3 (\frac{1}{\varepsilon} - \frac{1}{r}) + r_0 (e^{-\frac{x}{r_0}} (-r_0 - \frac{2 r_0^2}{x})) \Big|_\varepsilon^r =
  r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon} + \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} )
 \implies \Phi(r) = 4 \pi G \rho_c r_0^2 (\frac{2 r_0}{\varepsilon} - \frac{e^{-\frac{\varepsilon}{r_0}}(\varepsilon + 2 r_0)  }{\varepsilon}
-+ \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} )$
++ \frac{-2 r_0 + e^{-\frac{r}{r_0}} (r + 2 r_0) }{r} )$ ($\varepsilon \approx 0$)
 
 \item $M(r) = 4 \pi \rho_c \int_0^r{x^2 e^{-\frac{x}{r_0}}dx} = 4 \pi \rho_c r_0 ( 2 r_0^2 - 2 r_0^2 e^{-\frac{r}{r_0}} - 2 r_0 r e^{-\frac{r}{r_0}} - r^2 e^{-\frac{r}{r_0}}) $
 
@@ -192,7 +192,7 @@ sympySolve.py obtiene las fórmulas analíticas de r0 y rhoC(allí se aproximo l
 
 \begin{description}
 \item Los gráficos se realizaron con un programa python (exp\_compare.py) 
-\item Se muestran los gráficos  para $\rho_c$ en $ \{0.5 * 10^5, 10^5, 1.5 * 10^5, 2.0 * 10^5 \}  $ kg/m3 y $r_0$ en $\{0.5 , 1, 1.5  ,2 \} $ kpc. 
+\item Se muestran los gráficos  para $\rho_c$ en $ \{2e-21,4e-21,9e-21,18e-21 \}  $ kg/m3 y $r_0$ en $\{1, 2, 5, 10 \} $ kpc. 
 Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distancia m, potencial J/kg, densidad proyectada kg/m2, vc m/s y se consideró la constante gravitacional $G = 6.6 * 10^{-11} m^3/(kg * s^2)$
 
 \end{description}
@@ -256,13 +256,15 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 
 \subsection*{Comparación}
 \begin{description}
-\item Elegimos $r_0$ (el parametro de escala de la distribucion exponencial)= 2kpc y $\rho_c$ = 1e+5 y ejecutamos el programa para dibujar la masa para la distribución exponencial. 
-\item La masa total obtenida y misma densidad central introducidas antes se introducen como parámetros para dibujar los gráficos en el caso del potencial isócrono para poder hacer una comparación (el parámetro b se calcula : $b = (\frac{3 M}{16 \pi \rho_c})^{\frac{1}{3}}$ -  reemplazando r=0 en la fórmula de la densidad)
-\end{description}
+\item Para comparar los gráficos de las funciones de 2 sistemas: uno con distribucion de densidad exponencial y otro con el modelo de potencial isócrono que tienen la misma densidad central y masa total:
+\item Elegimos $r_0$ (el parametro de escala de la distribucion exponencial)= 5kpc (1.53e20) y $\rho_c$ = 9e-21 y ejecutamos el programa para dibujar la masa para la distribución exponencial. 
+\item La masa total obtenida aqui y la misma $\rho_c$ metemos como parametros para calcular las funciones del potencial isocrono.
+\item El parámetro b del potencial isócrono se calcula reemplazando r=0 en la fórmula de la densidad: $b = (\frac{3 M}{16 \pi \rho_c})^{\frac{1}{3}}$ 
+  \end{description}
 
 \begin{verbatim}
- python exp_plot.py   --type=m  --rmax=0.5e+21  --r0=6.16e+19 --rhoC=1e+5
- python isochrone_plot.py --rhoC=1.0e5 --type=v --mass=5.9e+65 --rmax=0.8e+22
+	python exp_plot.py --type=m --rmax=1e+22 --r0=1.53e20  --rhoC=9e-21
+	python isochrone_plot.py --type=v --rmax=1e+22 --mass=8.1e+41  --rhoC=9e-21
 \end{verbatim}
 
 \begin{figure}[!ht]
@@ -274,7 +276,7 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 \begin{figure}[!ht]
  \centering
  \includegraphics[scale=0.3]{massAnComp.png}
- \caption{\emph{Masa comparada}}
+ \caption{\emph{Masa comparada}(Rmax en el caso del potencial isocrono = 10 * Rmax que en el caso de la distr. exp.)}
 \end{figure}
 
 
@@ -302,9 +304,17 @@ Todas las cantidades estan expresadas en las unidades SI: densidad kg/m3, distan
 \section*{Conclusiones}
 \begin{description}
 \item Para las 2 distribuciones cuando la densidad es casi 0 la masa encerrada en el radius correspondiente es casi toda la masa (despues de este radius la masa es casi constante), el potencial se acerca a 0 y vc tiene el máximo
-\item Variando el parámetro de escala $r_0$ (el radio en cual el logaritmo natural de la densidad decrece con una unidad comparado al logaritmo de la densidad central): si es mayor la densidad decrece mas lento (con respecto a la distancia del centro), la masa total  a va ser mayor igual que el máximo de la vc (pero van a crecer mas lento) y el potencial en el centro que va a decrecer mas despacio (igual que la densidad).Si la densidad decrece la densidad proyectada decrece más rápido visto que en el centro hay mas puntos para sumar la densidad (para integrar a lo largo de la linea de vision)
-\item Cuanto mayor es la densidad central, mayor será la masa, la vc  y el potencial en el centro
-\item En el caso del potencial isocrono la densidad tiene una porción muy pequeña en el centro casi constante, pero despues decrece mas rapido que en el caso de la distribucion exponencial, lo que hace que la masa crece mucho mas despacio y el potencial en el centro va a ser menor, igual que la vc máxima.
+\item Si la densidad decrece la densidad proyectada decrece más rápido visto que en el centro hay mas puntos para sumar la densidad (para integrar a lo largo de la linea de vision)
+
+\item Para la distribución exponencial:
+
+\begin{description}
+	\item Variando el parámetro de escala $r_0$ (el radio en cual el logaritmo natural de la densidad decrece con una unidad comparado al logaritmo de la densidad central): si es mayor la densidad decrece mas lento (con respecto a la distancia del centro), la masa total  a va ser mayor igual que el máximo de la vc (pero van a crecer mas lento) y el potencial en el centro que va a decrecer mas despacio (igual que la densidad).	
+\item Cuanto mayor es la densidad central, mayor será la masa, la vc  y el potencial en el centro igual que en el caso de aumentar el valor del parametro de escala $r_0$ pero la diferencia es menor que en el caso de variar $r_0$
+\end{description}
+
+\item En el caso del potencial isocrono la densidad tiene una porción muy pequeña en el centro casi constante, pero despues decrece mas rapido que en el caso de la distribucion exponencial, lo que hace que la masa crece mucho mas despacio(y la masa total es la misma)  y el potencial en el centro va a ser menor, igual que la vc máxima.
+\item Observamos que en los 2 casos la  velocidad circular al radio donde se encuentra el sol es alrededor de 2.2e5 m/s, pero la masa total es menor de 2e42 (8.1e+41, 2.4 veces menor, porque?)
 \end{description}
 
 

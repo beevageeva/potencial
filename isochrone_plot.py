@@ -68,8 +68,23 @@ def plotFor(b , M, fType):
 		plt.title('Pot b = %.1e m, M=%.1e Kg' % (b, M))
 
 	def plotVcFunc():
-		plt.plot(r, vcFunc(r, b, M))
-		
+		vcRes = vcFunc(r, b, M)
+		plt.plot(r, vcRes)
+		#mark points for sun velocity
+		sunDistance = 2.5e20
+		indexR = np.argmin(np.abs(sunDistance - r))	
+		print("vc at sunDistance %.2e = %.2e" % (r[indexR], vcRes[indexR]))
+		#YLIM
+		print("Using ylim")
+		plt.ylim(0,300000)	
+		#plt.xticks(list(plt.xticks()[0]) +[r[indexR]])
+		#remove first tick
+		newxticks = list(plt.xticks()[0])
+		newxticks.pop(0)
+		plt.xticks(newxticks +[r[indexR]])
+		plt.yticks(list(plt.yticks()[0]) + [vcRes[indexR]])
+
+	
 		plt.xlabel('radius(m)')
 		plt.ylabel('vc(m/s)')
 		

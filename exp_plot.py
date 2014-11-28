@@ -42,7 +42,19 @@ def plotFor(rhoC , r0, fType):
 		plt.title('Pot for rho = rhoC * exp(-r/r0), rhoC = %.1e kg/m3, r0=%.1e m' % (rhoC, r0))
 
 	def plotVcFunc():
-		plt.plot(r, vcFunc(r, rhoC, r0), label='r0=%.1e' % r0)
+		vcRes =  vcFunc(r, rhoC, r0)
+		plt.plot(r, vcRes, label='r0=%.1e' % r0)
+		#mark points for sun velocity
+		sunDistance = 2.5e20
+		indexR = np.argmin(np.abs(sunDistance - r))	
+		print("vc at sunDistance %.2e = %.2e" % (r[indexR], vcRes[indexR]))
+		#plt.xticks(list(plt.xticks()[0]) +[r[indexR]])
+		#remove first tick
+		newxticks = list(plt.xticks()[0])
+		newxticks.pop(0)
+		plt.xticks(newxticks +[r[indexR]])
+		plt.yticks(list(plt.yticks()[0]) + [vcRes[indexR]])
+	
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('vc(m/s)')
@@ -58,7 +70,11 @@ def plotFor(rhoC , r0, fType):
 		plt.title('Proj. dens. for rho = rhoC * exp(-r/r0), rhoC = %.1e kg/m3, r0=%.1e m' % (rhoC, r0))
 
 	def plotMassFunc():
-		plt.plot(r, massFunc(r, rhoC, r0))
+		res = massFunc(r, rhoC, r0)
+		plt.plot(r, res)
+		#print total mass
+		last = res[res.shape[0] - 1]
+		print "Total mass is %.1e" % last
 		
 		plt.xlabel('radius(m)')
 		plt.ylabel('mass(Kg)')
