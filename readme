@@ -34,6 +34,7 @@ Parametros:
 --rmax=<value> 
 	radio maximo para mostrar el gráfico 
 --numerical
+	coge las definiciones de las funciones potencial, masa y velocidad circular del fichero exp_num.py (donde las integrales se calculan de forma numérica) en lugar de exp_an.py (donde las integrales se expresaron de forma analítica, así es mucho más rápido)
 
 Ejemplos:
 python exp_plot.py --type=v --rhoC=1e5 --r0=6.16e19 --rmax=1e22 --numerical
@@ -47,14 +48,22 @@ Parametros:
 --mass=<value> 
 --rmax=<value> 
 	radio maximo para mostrar el gráfico 
-el parametro original b se calcula a partir de rhoC y mass (total mass) - porque la idea fue de comparar con la distr. exponencial
+el parametro original b se calcula a partir de rhoC y mass (total mass) - porque la idea fue de comparar con la distr. exponencial con la misma masa total y distribución central (se puede modificar facilmente el codigo para que acepte el parametro b)
+Ejemplos:
+python isochrone_plot.py --type=v --rmax=1e+22 --mass=8.1e+41  --rhoC=9e-21
+python isochrone_plot.py --type=p --rmax=1e+22 --mass=8.1e+41  --rhoC=9e-21
 
 
-plot_functions.py (para hacer los graficos de las funciones a integrar)
-pt.py  (el primer programa para hacer los gráficos, mas general , pero no tiene mucho uso) ver readme_pt
+plot_functions.py (para hacer los graficos de las funciones a integrar f y g - ver pdf)
 
 
-sympyPot.py  calcula de forma analítica(usando sympy) vc, masa y densidad a partir de la función potencial
+sympyPot.py  calcula de forma analítica(usando sympy) vc, masa y densidad a partir de la función potencial (se usó para calcular en el caso del potencial isocrono)
 sympyDens.py calcula de forma analítica(usando sympy) las funciones potencial, masa y vc a partir de la funcion densidad (usando limites de integración 0 y r para la primera integral y epsilon y r para la segunda en el caso del potencial: ver pdf)
 Se podría modificar para cualquier funcion densidad o potencial
 
+sympySolve.py se usó para calcular las fórmulas analíticas de r0 y rhoC de las formulas analiticas de la masa y velocidad circular
+con condiciones vc(Rsun) = vSun, M(Rtotal) = Mtotal 
+Luego en estas fórmulas se pueden reemplazar Rtotal con el radio de nuestra galaxia Mtotal con la masa total, Rsun el radio donde se encuentra el sol del centro de la galaxia y vcSun con la velocidad circular del sol para obtener unos valores del r0 y rhoC cerca de unos reales
+
+
+pt.py  (el primer programa para hacer los gráficos, mas general , pero no tiene mucho uso) ver readme_pt
